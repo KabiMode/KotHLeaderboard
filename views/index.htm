@@ -1,0 +1,294 @@
+<head>
+    <style media="screen">
+        @import url('https://fonts.googleapis.com/css?family=Luckiest+Guy');
+
+        body {
+            font-family: 'Luckiest Guy', cursive;
+            color: white;
+            text-align: center;
+        }
+        #wrapper{
+            display:inline-block;
+            width: 90%;
+            min-width: 600px;
+            max-width: 1000px;
+        }
+
+        .tab-row{
+            position: relative;
+            display: inline-block;
+            width: calc(100% - 60px);
+        }
+        .tab{
+            display: inline-block;
+            box-sizing: border-box;
+            height: 168px;
+            width: 33.333333333%;
+            border: 24px solid transparent;
+            -webkit-border-image: 48 stretch; /* Safari 3.1-5 */
+            -o-border-image: 48 stretch; /* Opera 11-12.1 */
+            border-image: 48 stretch;
+            background-clip: padding-box;
+            border-radius: 25px 25px 0px 0px;
+            cursor: pointer;
+        }
+        .tab:hover{
+            -webkit-filter: saturate(10%);
+            filter: saturate(10%);
+            -webkit-filter: brightness(110%);
+            filter: brightness(110%);
+        }
+
+        .tab img {
+            height: 125px;
+            -webkit-filter: drop-shadow(0px 3px 5px rgba(0,0,0,0.9));
+            filter: drop-shadow(0px 3px 5px rgba(0,0,0,0.9));
+        }
+
+        #table-wrapper{
+            display:inline-block;
+            border: 42px solid transparent;
+            -webkit-border-image: url(/content/KotHBorderBack.png) 84 stretch; /* Safari 3.1-5 */
+            -o-border-image: url(/content/KotHBorderBack.png) 84 stretch; /* Opera 11-12.1 */
+            border-image: url(/content/KotHBorderBack.png) 84 stretch;
+            background-color:#765c20;
+            background-clip: padding-box;
+            margin-top: -3px;
+            z-index: 2;
+            position: relative;
+        }
+        table {
+            position: relative;
+            table-layout: fixed;
+            text-align: center;
+            background-color: #3d15a1;
+            border-collapse: separate;
+            width: calc(100% + 48px);
+            margin-left: -24px;
+            margin-top: 3px;
+            max-width: 1000px;
+            border-spacing:0 5px;
+            text-shadow: 0 4px black;
+            font-size: 1.5em;
+            z-index: 2;
+        }
+        tr {
+        }
+        td {
+            background-color: #5b7bf8;
+            border: #86d5ff;
+            border-style: groove;
+            border-width: 6px 0;
+        }
+        tbody tr:first-of-type{
+            border-spacing:0;
+        }
+        tbody tr:first-of-type td{
+            font-size: 2em;
+            background-color: #f85b5b;
+            border-color: #ff8692;
+            /*border-width: 0 0 6px 0;*/
+        }
+        tbody tr:first-of-type td:first-of-type{
+            background-color: #fa4646;
+        }
+        tbody tr:first-of-type td:first-of-type::before{
+            content: "";
+            display: inline-block;
+            background-image: url(/content/KotHCrown.png);
+            background-size: 60px 43px;
+            width: 60px;
+            height: 43;
+        }
+        tbody tr:first-of-type td:first-of-type::after{
+            content: "";
+            display: inline-block;
+            width: 60px;
+            height: 43;
+        }
+        td:nth-child(1){
+            width: 150px;
+            background-color: #3774fb;
+        }
+        td:nth-child(2){
+            padding-left: 20px;
+            text-align: left;
+        }
+        td:nth-child(3){
+            width: 200px;
+        }
+        td:nth-child(4){
+            width: 50px;
+        }
+        td:nth-child(4) img{
+            height: 35px;
+            margin: 5px;
+            -webkit-filter: drop-shadow(0px 0px 3px rgba(0,0,0,0.9));
+            filter: drop-shadow(0px 0px 3px rgba(0,0,0,0.9));
+        }
+    </style>
+</head>
+<h1>Hello World</h1>
+<div id="wrapper">
+    <div id="tab-wrapper">
+        <div class="tab-row" style="z-index:0;">
+            <div class="tab"id="all"style="border-image-source:url(/content/KotHTabsAll.png);background-color:#fcfcfc;"><img src = "/content/KotHCrown.png"></div><!--
+            --><div class="tab"id="none"style="border-image-source:url(/content/KotHTabsNone.png);background-color:#b2aaa9;"><img src = "https://cdn0.iconfinder.com/data/icons/free-social-media-set/24/discord-512.png"></div>
+        </div>
+        <div class="tab-row" style="margin-top:-21px;z-index:1;">
+            <div class="tab"id="bravery"style="border-image-source:url(/content/KotHTabsBravery.png);background-color:#9c84ef;"><img src = "https://vignette.wikia.nocookie.net/hypesquad/images/4/41/BraveryLogo.png/revision/latest?cb=20180825044200"></div><!--
+            --><div class="tab"id="brilliance"style="border-image-source:url(/content/KotHTabsBrilliance.png);background-color:#f47b67;"><img src = "https://vignette.wikia.nocookie.net/hypesquad/images/8/8f/BrillianceLogo.png/revision/latest?cb=20180825045035"></div><!--
+            --><div class="tab"id="balance"style="border-image-source:url(/content/KotHTabsBalance.png);background-color:#45ddc0;"><img src = "https://vignette.wikia.nocookie.net/hypesquad/images/4/4f/BalanceLogo.png/revision/latest?cb=20180825045553"></div>
+        </div>
+    </div>
+    <div id="table-wrapper">
+        <table id="table">
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+function getval(path, callback ) {
+    $.getJSON(path)
+	.done(function(data) {
+		callback(data);
+	});
+}
+function sortByKey(array, key) {
+    return array.sort(function(a, b) {
+        var x = a[key]; var y = b[key];
+        return ((x > y) ? -1 : ((x < y) ? 1 : 0));
+    });
+}
+
+function collapseJSON (data) {
+    console.log("success");
+    for (var i in data.one) {
+        data['users'].push({"place":data.one[i].place,"elo":data.one[i].elo,"discordHandle":data.one[i].discordHandle});
+    }
+    for (var i in data.two) {
+        data['users'].push({"place":data.two[i].place,"elo":data.two[i].elo,"discordHandle":data.two[i].discordHandle,"house":data.two[i].house});
+    }
+    for (var i in data.three) {
+        data['users'].push({"place":data.three[i].place,"elo":data.three[i].elo,"discordHandle":data.three[i].discordHandle,"house":data.three[i].house});
+    }
+    for (var i in data.four) {
+        data['users'].push({"place":data.four[i].place,"elo":data.four[i].elo,"discordHandle":data.four[i].discordHandle,"house":data.four[i].house});
+    }
+    delete data["one"];
+    delete data["two"];
+    delete data["three"];
+    delete data["four"];
+    data.users = sortByKey(data.users, "elo");
+    console.log(data);
+    displayLeaders(data);
+    //displayLeaders();
+}
+
+function displayLeaders(leaders){
+    var table = document.getElementById("table");
+    table.innerHTML = "";
+    for (var i = 0; i < leaders.users.length; i++) {
+        var row = table.insertRow(i);
+        var cell1 = row.insertCell(0);
+        var cell2 = row.insertCell(1);
+        var cell3 = row.insertCell(2);
+        var cell4 = row.insertCell(3);
+        if (i == 0) {
+            cell1.innerHTML = "<br>" + (i+1) + "<br>"; //cell1.innerHTML = "<br>" + leaders.users[i].place + "<br>";
+        } else {
+            cell1.innerHTML = i+1; //cell1.innerHTML = leaders.users[i].place;
+        }
+        cell2.innerHTML = "@"+leaders.users[i].discordHandle;
+        cell3.innerHTML = numberWithCommas(leaders.users[i].elo);
+        if (leaders.users[i].house == "balance") {
+            cell4.innerHTML = '<img src = "https://vignette.wikia.nocookie.net/hypesquad/images/4/4f/BalanceLogo.png/revision/latest?cb=20180825045553">'
+        } else if (leaders.users[i].house == "bravery") {
+            cell4.innerHTML = '<img src = "https://vignette.wikia.nocookie.net/hypesquad/images/4/41/BraveryLogo.png/revision/latest?cb=20180825044200">'
+        } else if (leaders.users[i].house == "brilliance") {
+            cell4.innerHTML = '<img src = "https://vignette.wikia.nocookie.net/hypesquad/images/8/8f/BrillianceLogo.png/revision/latest?cb=20180825045035">'
+        } else {
+            cell4.innerHTML = '<img src = "https://cdn0.iconfinder.com/data/icons/free-social-media-set/24/discord-512.png">';
+        }
+        //cell4.innerHTML = leaders.users[i].house;
+
+        //images
+        //Balance: https://vignette.wikia.nocookie.net/hypesquad/images/4/4f/BalanceLogo.png/revision/latest?cb=20180825045553
+        //Bravery: https://vignette.wikia.nocookie.net/hypesquad/images/4/41/BraveryLogo.png/revision/latest?cb=20180825044200
+        //Brilliance: https://vignette.wikia.nocookie.net/hypesquad/images/8/8f/BrillianceLogo.png/revision/latest?cb=20180825045035
+    }
+}
+
+function loadLeaders(ladder){
+    console.log(ladder);
+    var result;
+    if (ladder == "") {
+        var newJSON = {"users":[],"one":[],"two":[],"three":[],"four":[]};
+        getval("./data/leaderboard", function(newData){
+            //$.extend(newJSON, newData.users );
+            //Object.assign(newJSON.users, newData.users);
+            $.extend( newJSON.one, newData.users );
+            console.log(newData)
+            console.log(newJSON)
+            if (newJSON.one.length == 10 && newJSON.two.length == 10 && newJSON.three.length == 10 && newJSON.four.length == 10) {
+                collapseJSON(newJSON);
+            }
+        });
+        getval("./data/leaderboard?house=balance", function(newData){
+            //$.extend(newJSON, newData.users );
+            //Object.assign(newJSON.users, newData.users);
+            $.extend( newJSON.two, newData.users );
+            console.log(newData)
+            console.log(newJSON)
+            if (newJSON.one.length == 10 && newJSON.two.length == 10 && newJSON.three.length == 10 && newJSON.four.length == 10) {
+                collapseJSON(newJSON);
+            }
+        });
+        getval("./data/leaderboard?house=bravery", function(newData){
+            //$.extend(newJSON, newData.users );
+            //Object.assign(newJSON.users, newData.users);
+            $.extend( newJSON.three, newData.users );
+            console.log(newData)
+            console.log(newJSON)
+            if (newJSON.one.length == 10 && newJSON.two.length == 10 && newJSON.three.length == 10 && newJSON.four.length == 10) {
+                collapseJSON(newJSON);
+            }
+        });
+        getval("./data/leaderboard?house=brilliance", function(newData){
+            //$.extend( true, newJSON, newData.users );
+            //$.extend( newJSON, newData.users );
+            //Object.assign(newJSON.users, newData.users);
+            $.extend( newJSON.four, newData.users );
+            console.log(newJSON)
+            console.log(newData)
+            if (newJSON.one.length == 10 && newJSON.two.length == 10 && newJSON.three.length == 10 && newJSON.four.length == 10) {
+                collapseJSON(newJSON);
+            }
+        });
+    } else if (ladder=="none") {
+        getval("./data/leaderboard", displayLeaders);
+    } else {
+        getval("./data/leaderboard?house=" + ladder, displayLeaders);
+    }
+        console.log(result);
+    return result;
+}
+
+//var leaders = JSON.parse('{"users":[{"place":1,"elo":160104,"discordHandle":"Greenshrum","house":"brilliance"},{"place":2,"elo":151116,"discordHandle":"DPS Abook","house":"brilliance"},{"place":3,"elo":146664,"discordHandle":"Cheezy","house":"brilliance"},{"place":4,"elo":144480,"discordHandle":"Soren","house":"brilliance"},{"place":5,"elo":141540,"discordHandle":"Kabi","house":"brilliance"},{"place":6,"elo":140616,"discordHandle":"PlasmaPlasma (Creska)","house":"brilliance"},{"place":7,"elo":140112,"discordHandle":"r3lax (silkyskilz)","house":"brilliance"},{"place":8,"elo":139524,"discordHandle":"Fennrir","house":"brilliance"},{"place":9,"elo":138684,"discordHandle":"The_Wicked_I","house":"brilliance"},{"place":10,"elo":137844,"discordHandle":"eliterate","house":"brilliance"}]}');
+
+//loadLeaders("brilliance");
+//loadLeaders("balance");
+document.getElementById("all").addEventListener("click", function() {loadLeaders("")});
+document.getElementById("none").addEventListener("click", function() {loadLeaders("none")});
+document.getElementById("balance").addEventListener("click", function() {loadLeaders("balance")});
+document.getElementById("bravery").addEventListener("click", function() {loadLeaders("bravery")});
+document.getElementById("brilliance").addEventListener("click", function() {loadLeaders("brilliance")});
+loadLeaders("");
+
+</script>
