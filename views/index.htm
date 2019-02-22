@@ -278,8 +278,10 @@
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
-count = (getUrlVars()["count"] == "" || getUrlVars()["count"] > 100 || getUrlVars()["count"] < 1) ? 100 : getUrlVars()["count"];
-
+count = (getUrlVars()["count"] == null || getUrlVars()["count"] == "" || getUrlVars()["count"] > 100 || getUrlVars()["count"] < 1) ? 100 : getUrlVars()["count"];
+//window.onload = function() {
+//    setUrlParameter(window.location.href, "count", count);
+//};
 flexFont = function () {
     var divs = document.getElementsByClassName("flexFont");
     for(var i = 0; i < divs.length; i++) {
