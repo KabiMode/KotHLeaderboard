@@ -22,10 +22,10 @@
         #major-wrapper:before {
             content: "";
             position: absolute;
-            width: 600%;
-            height: 600%;
-            top: -300%;
-            left: -300%;
+            width: 6000%;
+            height: 6000%;
+            top: -3000%;
+            left: -3000%;
             z-index: -1;
             background:#218dc6 url(/content/KotHBackground.png) 0 0 repeat;
             -webkit-transform: rotate(10deg);
@@ -108,18 +108,28 @@
             border-radius: 50%;
             margin: 20px;
             display:table;
+            cursor: pointer;
         }
         #help span {
             display: table-cell;
             vertical-align: middle;
         }
+        .helper {
+            position: absolute;
+            display: none;
+        }
+        /*
+        #header > span::after {
+            content: "change number of players";
+            display: inline-block;
+            position: absolute;
+        }*/
         #wrapper{
             display:inline-block;
             width: 90%;
             min-width: 700px;
             max-width: 1000px;
         }
-
         .tab-row{
             position: relative;
             display: inline-block;
@@ -283,7 +293,7 @@
         </div>
         <h1>Leaderboard</h1>
         <br>
-        <span>top: <input type="number" name="topCount" id="topCount" value="10" max="100" min="1"></span>
+        <span>top: <input type="number" name="topCount" id="topCount" value="10" max="100" min="1"><span class="helper" style="margin-top: 7px;">🡄 change number of players</span></span>
     </div>
     <div id="wrapper">
         <div id="tab-wrapper">
@@ -529,4 +539,17 @@ document.getElementById("topCount").addEventListener("input", function() {
     loadLeaders(getUrlVars()["house"]);
 });
 
+$("body").on("click", "", function (e) {
+
+    for (var i = 0; i < document.getElementsByClassName("helper").length; i++) {
+        document.getElementsByClassName("helper")[i].style.display = "inline-block";
+    }
+    if (!$(e.target).is("#help, #help *")) {
+         // not stuff in here
+         for (var i = 0; i < document.getElementsByClassName("helper").length; i++) {
+             document.getElementsByClassName("helper")[i].style.display = "none";
+         }
+    }
+
+});
 </script>
