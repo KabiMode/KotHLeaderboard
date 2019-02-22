@@ -31,10 +31,6 @@
             -webkit-transform: rotate(10deg);
             transform: rotate(10deg);
             animation: animatedBackground 12s linear infinite;
-            image-rendering: -moz-crisp-edges;
-            image-rendering: -webkit-crisp-edges;
-            image-rendering: pixelated;
-            image-rendering: crisp-edges;
         }
         #header{
             width:100%;
@@ -45,10 +41,54 @@
         #header h1{
             display: inline-block;
             font-size: 4em;
-            margin-block-end: .3em;
+            margin-block-end: 0em;
             margin-block-start: .3em;
             text-shadow: 0 4px black;
             font-weight: initial;
+        }
+        #header span {
+            margin-bottom: .4em;
+            display: inline-block;
+        }
+        #header input {
+            display: table-row-group;
+            background-color: transparent;
+            font-family: inherit;
+            color: inherit;
+            font-size: 1.5em;
+            border: none;
+            width: 60px;
+        }
+        /*
+        input[type=number]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            cursor:pointer;
+            display:block;
+            width:8px;
+            color: #333;
+            text-align:center;
+            position:relative;
+        }
+        input[type=number]:hover::-webkit-inner-spin-button {*/
+        input[type=number]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            cursor:pointer;
+            display:block;
+            text-align:center;
+            position:relative;
+            background: rgba(0, 0, 0, 0) url('/content/KotHspinner.png') no-repeat 50% 50%; /*'http://i.stack.imgur.com/YYySO.png' */
+            border-radius: 3px;
+            background-size: 12px 28px;
+            width: 12px;
+            height: 28px;
+            padding: 4px;
+            position: relative;
+            right: 0px;
+            border-radius: 28px;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: -webkit-crisp-edges;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
         }
         #wrapper{
             display:inline-block;
@@ -210,6 +250,8 @@
 <div id="major-wrapper">
     <div id="header" class="extra">
         <h1>Leaderboard</h1>
+        <br>
+        <span>top: <input type="number" name="topCount" id="topCount" value="10" max="100" min="1"></span>
     </div>
     <div id="wrapper">
         <div id="tab-wrapper">
@@ -236,6 +278,8 @@
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
+count = (getUrlVars()["count"] == "" || getUrlVars()["count"] > 100 || getUrlVars()["count"] < 1) ? 100 : getUrlVars()["count"];
+
 flexFont = function () {
     var divs = document.getElementsByClassName("flexFont");
     for(var i = 0; i < divs.length; i++) {
@@ -275,6 +319,42 @@ function sortByKey(array, key) {
         var x = a[key]; var y = b[key];
         return ((x > y) ? -1 : ((x < y) ? 1 : 0));
     });
+}
+function getUrlVars() {
+    var vars = {};
+    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+        vars[key] = value;
+    });
+    return vars;
+}
+function setUrlParameter(url, key, value) {
+
+    var baseUrl = url.split('?')[0],
+        urlQueryString = '?' + url.split('?')[1],
+        newParam = key + '=' + value,
+        params = '?' + newParam;
+
+    // If the "search" string exists, then build params from it
+    if (urlQueryString) {
+        var updateRegex = new RegExp('([\?&])' + key + '[^&]*');
+        var removeRegex = new RegExp('([\?&])' + key + '=[^&;]+[&;]?');
+
+        if (typeof value === 'undefined' || value === null || value === '') { // Remove param if value is empty
+            params = urlQueryString.replace(removeRegex, "$1");
+            params = params.replace(/[&;]$/, "");
+
+        } else if (urlQueryString.match(updateRegex) !== null) { // If param exists already, update it
+            params = urlQueryString.replace(updateRegex, "$1" + newParam);
+
+        } else { // Otherwise, add it to end of query string
+            params = urlQueryString + '&' + newParam;
+        }
+    }
+
+    // no parameter was set so we don't need the question mark
+    params = params === '?' ? '' : params;
+
+    return baseUrl + params;
 }
 
 function collapseJSON (data) {
@@ -338,55 +418,53 @@ function displayLeaders(leaders){
     flexFont()
 }
 function loadLeaders(ladder){
-    console.log(ladder);
+    console.log(count);
+    //var count = (getUrlVars()["count"] == "" || getUrlVars()["count"] > 100 || getUrlVars()["count"] < 1) ? 100 : getUrlVars()["count"];
     var result;
-    if (ladder == "") {
+    if (ladder == "" || ladder == null) {
         var newJSON = {"users":[],"one":[],"two":[],"three":[],"four":[]};
-        getval("https://api.kingofthehat.com/leaderboard", function(newData){ //./data/leaderboard
+        getval("https://api.kingofthehat.com/leaderboard" + "?count=" + count, function(newData){ //./data/leaderboard
             //$.extend(newJSON, newData.users );
             //Object.assign(newJSON.users, newData.users);
             $.extend( newJSON.one, newData.users );
-            console.log(newData)
-            console.log(newJSON)
-            if (newJSON.one.length == 10 && newJSON.two.length == 10 && newJSON.three.length == 10 && newJSON.four.length == 10) {
+            //console.log(newData)
+            //console.log(newJSON)
+            if (newJSON.one.length == count && newJSON.two.length == count && newJSON.three.length == count && newJSON.four.length == count) {
                 collapseJSON(newJSON);
             }
         });
-        getval("https://api.kingofthehat.com/leaderboard?house=balance", function(newData){//./data/leaderboard?house=balance
-            //$.extend(newJSON, newData.users );
-            //Object.assign(newJSON.users, newData.users);
+        getval("https://api.kingofthehat.com/leaderboard?house=balance" + "&count=" + count, function(newData){//./data/leaderboard?house=balance
             $.extend( newJSON.two, newData.users );
-            console.log(newData)
-            console.log(newJSON)
-            if (newJSON.one.length == 10 && newJSON.two.length == 10 && newJSON.three.length == 10 && newJSON.four.length == 10) {
+            //console.log(newData)
+            //console.log(newJSON)
+            if (newJSON.one.length == count && newJSON.two.length == count && newJSON.three.length == count && newJSON.four.length == count) {
                 collapseJSON(newJSON);
             }
         });
-        getval("https://api.kingofthehat.com/leaderboard?house=bravery", function(newData){//./data/leaderboard?house=bravery
-            //$.extend(newJSON, newData.users );
-            //Object.assign(newJSON.users, newData.users);
+        getval("https://api.kingofthehat.com/leaderboard?house=bravery" + "&count=" + count, function(newData){//./data/leaderboard?house=bravery
             $.extend( newJSON.three, newData.users );
-            console.log(newData)
-            console.log(newJSON)
-            if (newJSON.one.length == 10 && newJSON.two.length == 10 && newJSON.three.length == 10 && newJSON.four.length == 10) {
+            //console.log(newData)
+            //console.log(newJSON)
+            if (newJSON.one.length == count && newJSON.two.length == count && newJSON.three.length == count && newJSON.four.length == count) {
                 collapseJSON(newJSON);
             }
         });
-        getval("https://api.kingofthehat.com/leaderboard?house=brilliance", function(newData){//./data/leaderboard?house=brilliance
-            //$.extend( true, newJSON, newData.users );
-            //$.extend( newJSON, newData.users );
-            //Object.assign(newJSON.users, newData.users);
+        getval("https://api.kingofthehat.com/leaderboard?house=brilliance" + "&count=" + count, function(newData){//./data/leaderboard?house=brilliance
             $.extend( newJSON.four, newData.users );
-            console.log(newJSON)
-            console.log(newData)
-            if (newJSON.one.length == 10 && newJSON.two.length == 10 && newJSON.three.length == 10 && newJSON.four.length == 10) {
+            //console.log(newJSON)
+            //console.log(newData)
+            if (newJSON.one.length == count && newJSON.two.length == count && newJSON.three.length == count && newJSON.four.length == count) {
                 collapseJSON(newJSON);
             }
         });
     } else if (ladder=="none") {
-        getval("https://api.kingofthehat.com/leaderboard", displayLeaders); //"./data/leaderboard"
+        getval("https://api.kingofthehat.com/leaderboard" + "?count=" + count, displayLeaders); //"./data/leaderboard"
     } else {
-        getval("https://api.kingofthehat.com/leaderboard?house=" + ladder, displayLeaders); //"./data/leaderboard?house=" + ladder
+        if (ladder == "balance" || ladder == "bravery" || ladder == "brilliance") {
+            getval("https://api.kingofthehat.com/leaderboard?house=" + ladder + "&count=" + count, displayLeaders); //"./data/leaderboard?house=" + ladder
+        } else {
+                getval("https://api.kingofthehat.com/leaderboard" + "?count=" + count, displayLeaders); //"./data/leaderboard"
+        }
     }
         console.log(result);
     return result;
@@ -401,13 +479,17 @@ function loadMatchNumbers(data){
 //var leaders = JSON.parse('{"users":[{"place":1,"elo":160104,"discordHandle":"Greenshrum","house":"brilliance"},{"place":2,"elo":151116,"discordHandle":"DPS Abook","house":"brilliance"},{"place":3,"elo":146664,"discordHandle":"Cheezy","house":"brilliance"},{"place":4,"elo":144480,"discordHandle":"Soren","house":"brilliance"},{"place":5,"elo":141540,"discordHandle":"Kabi","house":"brilliance"},{"place":6,"elo":140616,"discordHandle":"PlasmaPlasma (Creska)","house":"brilliance"},{"place":7,"elo":140112,"discordHandle":"r3lax (silkyskilz)","house":"brilliance"},{"place":8,"elo":139524,"discordHandle":"Fennrir","house":"brilliance"},{"place":9,"elo":138684,"discordHandle":"The_Wicked_I","house":"brilliance"},{"place":10,"elo":137844,"discordHandle":"eliterate","house":"brilliance"}]}');
 
 //loadLeaders("brilliance");
-//loadLeaders("balance");
-document.getElementById("all").addEventListener("click", function() {loadLeaders("")});
-document.getElementById("none").addEventListener("click", function() {loadLeaders("none")});
-document.getElementById("balance").addEventListener("click", function() {loadLeaders("balance")});
-document.getElementById("bravery").addEventListener("click", function() {loadLeaders("bravery")});
-document.getElementById("brilliance").addEventListener("click", function() {loadLeaders("brilliance")});
-loadLeaders("");
+//loadLeaders("balance");yrameter(window.location.href, "house", 'none'));});
+document.getElementById("balance").addEventListener("click", function() {loadLeaders("balance");history.pushState(null, '', setUrlParameter(window.location.href, "house", 'balance'));});
+document.getElementById("bravery").addEventListener("click", function() {loadLeaders("bravery");history.pushState(null, '', setUrlParameter(window.location.href, "house", 'bravery'));});
+document.getElementById("brilliance").addEventListener("click", function() {loadLeaders("brilliance");history.pushState(null, '', setUrlParameter(window.location.href, "house", 'brilliance'));});
+loadLeaders(getUrlVars()["house"]);
+document.getElementById("topCount").value = count;//(getUrlVars()["count"] == "" || getUrlVars()["count"] > 100 || getUrlVars()["count"] < 1) ? 100 : getUrlVars()["count"];
 getval("https://api.kingofthehat.com/houses/hypesquad", loadMatchNumbers);
+document.getElementById("topCount").addEventListener("input", function() {
+    count = document.getElementById("topCount").value;
+    history.pushState(null, '', setUrlParameter(window.location.href, "count", count));
+    loadLeaders(getUrlVars()["house"]);
+});
 
 </script>
