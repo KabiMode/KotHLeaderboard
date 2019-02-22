@@ -76,7 +76,7 @@
             display:block;
             text-align:center;
             position:relative;
-            background: rgba(0, 0, 0, 0) url('/content/KotHspinner.png') no-repeat 50% 50%; /*'http://i.stack.imgur.com/YYySO.png' */
+            background: rgba(0, 0, 0, 0) url('/content/KotHSpinner.png') no-repeat 50% 50%; /*'http://i.stack.imgur.com/YYySO.png' */
             border-radius: 3px;
             background-size: 12px 28px;
             width: 12px;
@@ -482,6 +482,9 @@ function loadMatchNumbers(data){
 
 //loadLeaders("brilliance");
 //loadLeaders("balance");yrameter(window.location.href, "house", 'none'));});
+
+document.getElementById("all").addEventListener("click", function() {loadLeaders("");history.pushState(null, '', setUrlParameter(window.location.href, "house", 'all'));});
+document.getElementById("none").addEventListener("click", function() {loadLeaders("none");history.pushState(null, '', setUrlParameter(window.location.href, "house", 'none'));});
 document.getElementById("balance").addEventListener("click", function() {loadLeaders("balance");history.pushState(null, '', setUrlParameter(window.location.href, "house", 'balance'));});
 document.getElementById("bravery").addEventListener("click", function() {loadLeaders("bravery");history.pushState(null, '', setUrlParameter(window.location.href, "house", 'bravery'));});
 document.getElementById("brilliance").addEventListener("click", function() {loadLeaders("brilliance");history.pushState(null, '', setUrlParameter(window.location.href, "house", 'brilliance'));});
