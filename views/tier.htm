@@ -1,26 +1,60 @@
 <head>
     <link rel="stylesheet" type="text/css" href="/content/style.css">
     <style media="screen">
-    .tier{
-        height: 120px;
+    #wrapper{
+        display:inline-block;
+        width: 90%;
+        min-width: 700px;
+        max-width: 1300px;
+        text-align: left;
+        /*pixel outline*/
+        border-width: 42px;
+        border-style:solid;
+        -webkit-border-image: url(/content/KotHBorderBackFull.png) 84 stretch; /* Safari 3.1-5 */
+        -o-border-image: url(/content/KotHBorderBackFull.png) 84 stretch; /* Opera 11-12.1 */
+        border-image: url(/content/KotHBorderBackFull.png) 84 stretch;
+        background-color:#7C5620;
+        background-clip: padding-box;
+        z-index: 2;
+        position: relative;
     }
-    .tier td:nth-child(1){
+    #list-wrapper {
+        display:inline-block;
+        margin: 24px 0px;
+    }
+    .tier{
+    }
+    .tier > div:nth-child(1){
         width: 100px;
         height: 100px;
-        /*display: inline-block;
-        box-sizing: border-box;*/
+        display: inline-block;
+        position: relative;
+        margin: 3px 0px;
+        box-sizing: border-box;
         font-size: 60px;
         text-shadow: 0 4px black;
         text-align: center;
         vertical-align: middle;
-        border: #404040 solid 3px;
-        border-radius: 25px;
+        border: #404040 solid;
+        border-width: 3px 0px 3px 3px;
+        border-radius: 20px 0px 0px 20px;
     }
-    .tier td:nth-child(2){
-        background-color: #696969;
+
+    .tier > div:nth-child(1) span{
+        position: absolute;
+        display: block;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 100%;
+    }
+    .tier div:nth-child(2){
         display: inline-block;
-        background-clip: padding-box;
+        box-sizing: border-box;
+        height: 140px;
         padding: 10px;
+        background-color: #696969;
+        vertical-align: middle;
+        border-radius: 20px;
     }
     .character{
         display: inline-block;
@@ -29,12 +63,6 @@
     .character img{
         display: inline-block;
         height: 100%;
-    }
-    #wrapper{
-        display:inline-block;
-        width: 90%;
-        min-width: 700px;
-        max-width: 1300px;
     }
     </style>
 </head>
@@ -45,28 +73,26 @@
         <h1>Leaderboard</h1>
     </div>
     <div id="wrapper">
-        <table>
-            <tbody>
-                <tr class="tier" id="S">
-                    <td style="background-color:#FF7F7F;">S</td><td><div class="character"><img src="/content/portraits/Portrait_Zoe.png" alt="Zoe"></div></td>
-                </tr>
-                <tr class="tier" id="A">
-                    <td style="background-color:#FFBF7F;">A</td><td>1</td>
-                </tr>
-                <tr class="tier" id="B">
-                    <td style="background-color:#FFDF7F;">B</td><td></td>
-                </tr>
-                <tr class="tier" id="C">
-                    <td style="background-color:#FFFF7F;">C</td><td></td>
-                </tr>
-                <tr class="tier" id="D">
-                    <td style="background-color:#BFFF7F;">D</td><td></td>
-                </tr>
-                <tr class="tier" id="E">
-                    <td style="background-color:#7FFF7F;">E</td><td></td>
-                </tr>
-            </tbody>
-        </table>
+        <div id="list-wrapper">
+            <div class="tier" id="S">
+                <div style="background-color:#FF7F7F;"><span>S</span></div><div><div class="character"><img src="/content/portraits/Portrait_Zoe.png" alt="Zoe"></div></div>
+            </div>
+            <div class="tier" id="A">
+                <div style="background-color:#FFBF7F;"><span>A</span></div><div></div>
+            </div>
+            <div class="tier" id="B">
+                <div style="background-color:#FFDF7F;"><span>B</span></div><div></div>
+            </div>
+            <div class="tier" id="C">
+                <div style="background-color:#FFFF7F;"><span>C</span></div><div></div>
+            </div>
+            <div class="tier" id="D">
+                <div style="background-color:#BFFF7F;"><span>D</span></div><div></div>
+            </div>
+            <div class="tier" id="E">
+                <div style="background-color:#7FFF7F;"><span>E</span></div><div></div>
+            </div>
+        </div>
     </div>
     <div id="footer" class="extra">
         <h1>This page was created by Kabi (@Kabi in the discord, <a target="_blank" href="https://www.twitch.tv/kabimode">@kabimode</a> elsewhere)</h1>
