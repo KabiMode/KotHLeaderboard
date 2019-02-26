@@ -1,51 +1,8 @@
 <head>
+    <link rel="stylesheet" type="text/css" href="/content/style.css">
     <style media="screen">
-        @import url('https://fonts.googleapis.com/css?family=Luckiest+Guy');
-        @keyframes animatedBackground {
-        	from { background-position: 0 0; }
-        	to { background-position: 768px 384px; } //x is 16 pixels, y is 32 pixels. final image is scaled 600%
-        }
-        body {
-            margin: 0;
-            font-family: 'Luckiest Guy', cursive;
-            color: white;
-            text-align: center;
-            background-color: #4553b4;
-            overflow: -moz-scrollbars-none;
-            -webkit-text-stroke: 1px black;
-        }
-        body::-webkit-scrollbar { width: 0 !important }
-        #major-wrapper{
-            position: relative;
-            overflow: hidden;
-        }
-        #major-wrapper:before {
-            content: "";
-            position: absolute;
-            width: 6000%;
-            height: 6000%;
-            top: -3000%;
-            left: -3000%;
-            z-index: -1;
-            background:#218dc6 url(/content/KotHBackground.png) 0 0 repeat;
-            -webkit-transform: rotate(10deg);
-            transform: rotate(10deg);
-            animation: animatedBackground 12s linear infinite;
-        }
-        #header{
-            width:100%;
-            background-color: #4553b4;
-            border-bottom:#22245b solid 10px;
-            margin-bottom: 10px;
-            position: relative;
-        }
         #header h1{
-            display: inline-block;
-            font-size: 4em;
             margin-block-end: 0em;
-            margin-block-start: .3em;
-            text-shadow: 0 4px black;
-            font-weight: initial;
         }
         #header > span {
             margin-bottom: .4em;
@@ -249,30 +206,8 @@
             -webkit-filter: drop-shadow(0px 0px 3px rgba(0,0,0,0.9));
             filter: drop-shadow(0px 0px 3px rgba(0,0,0,0.9));
         }
-        #footer{
-            position: sticky;
-            z-index: 2;
-            width:100%;
-            box-sizing: border-box;
-            background-color: #4553b4;
-            border-top:#22245b solid 5px;
+        #footer {
             margin-top: -39px;
-            min-height: 100px;
-            bottom: -100px;
-        }
-        #footer h1{
-            display: inline-block;
-            font-size: 1em;
-            margin-block-end: .1em;
-            margin-block-start: 1em;
-            text-shadow: 0 4px black;
-            font-weight: initial;
-        }
-        h1 a {
-            text-shadow: 0 3px 2px black;
-            text-decoration: none;
-            color: #5b7bf8;
-            -webkit-text-stroke: 1px black;
         }
         @media (max-width: 800px) { /*777px*/
             .extra {
@@ -319,87 +254,12 @@
     </div>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="/content/processing.js"></script>
 <script type="text/javascript">
 count = (getUrlVars()["count"] == null || getUrlVars()["count"] == "" || getUrlVars()["count"] > 100 || getUrlVars()["count"] < 1) ? 100 : getUrlVars()["count"];
 //window.onload = function() {
 //    setUrlParameter(window.location.href, "count", count);
 //};
-flexFont = function () {
-    var divs = document.getElementsByClassName("flexFont");
-    for(var i = 0; i < divs.length; i++) {
-        var relFontsize
-        if (!isNaN(parseFloat(divs[i].style.fontSize))) {
-            relFontsize = 2*(divs[i].offsetWidth-15)/(divs[i].getElementsByTagName('span')[0].offsetWidth*2/parseFloat(divs[i].style.fontSize)); //to make general, replace 2 with divs[i].DEFAULTFONTHEIGHTASDEFINEDINSTYLESHEET
-        } else {
-            relFontsize = 2*(divs[i].offsetWidth-15)/(divs[i].getElementsByTagName('span')[0].offsetWidth);
-        }
-        if (relFontsize < 2) {
-            divs[i].style.fontSize = relFontsize+'em';
-        } else {
-            divs[i].style.fontSize = '2em';
-        }
-        //var relFontsize = divs[i].offsetWidth*2/558; //2/558
-        //divs[i].style.fontSize = relFontsize+'em';
-    }
-};
-window.onload = function(event) {
-    flexFont();
-};
-window.onresize = function(event) {
-    flexFont();
-};
-
-function numberWithCommas(x) {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
-function getval(path, callback ) {
-    $.getJSON(path)
-	.done(function(data) {
-		callback(data);
-	});
-}
-function sortByKey(array, key) {
-    return array.sort(function(a, b) {
-        var x = a[key]; var y = b[key];
-        return ((x > y) ? -1 : ((x < y) ? 1 : 0));
-    });
-}
-function getUrlVars() {
-    var vars = {};
-    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
-        vars[key] = value;
-    });
-    return vars;
-}
-function setUrlParameter(url, key, value) {
-
-    var baseUrl = url.split('?')[0],
-        urlQueryString = '?' + url.split('?')[1],
-        newParam = key + '=' + value,
-        params = '?' + newParam;
-
-    // If the "search" string exists, then build params from it
-    if (urlQueryString) {
-        var updateRegex = new RegExp('([\?&])' + key + '[^&]*');
-        var removeRegex = new RegExp('([\?&])' + key + '=[^&;]+[&;]?');
-
-        if (typeof value === 'undefined' || value === null || value === '') { // Remove param if value is empty
-            params = urlQueryString.replace(removeRegex, "$1");
-            params = params.replace(/[&;]$/, "");
-
-        } else if (urlQueryString.match(updateRegex) !== null) { // If param exists already, update it
-            params = urlQueryString.replace(updateRegex, "$1" + newParam);
-
-        } else { // Otherwise, add it to end of query string
-            params = urlQueryString + '&' + newParam;
-        }
-    }
-
-    // no parameter was set so we don't need the question mark
-    params = params === '?' ? '' : params;
-
-    return baseUrl + params;
-}
 
 function collapseJSON (data) {
     console.log("success");
@@ -533,6 +393,8 @@ document.getElementById("brilliance").addEventListener("click", function() {load
 loadLeaders(getUrlVars()["house"]);
 document.getElementById("topCount").value = count;//(getUrlVars()["count"] == "" || getUrlVars()["count"] > 100 || getUrlVars()["count"] < 1) ? 100 : getUrlVars()["count"];
 getval("https://api.kingofthehat.com/houses/hypesquad", loadMatchNumbers);
+
+
 document.getElementById("topCount").addEventListener("input", function() {
     count = document.getElementById("topCount").value;
     history.pushState(null, '', setUrlParameter(window.location.href, "count", count));
