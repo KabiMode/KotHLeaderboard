@@ -19,25 +19,31 @@
         position: relative;
     }
     #list-wrapper {
-        display:inline-block;
         margin: 24px 0px;
     }
     .tier{
+        margin: 3px 0px;
     }
     .tier > div:nth-child(1){
         width: 100px;
         height: 100px;
         display: inline-block;
         position: relative;
-        margin: 3px 0px;
+        float: left;
+        margin: 0px 0px 0px 0px;
         box-sizing: border-box;
         font-size: 60px;
         text-shadow: 0 4px black;
         text-align: center;
         vertical-align: middle;
-        border: #404040 solid;
+        border: #404040 outset;
         border-width: 3px 0px 3px 3px;
         border-radius: 20px 0px 0px 20px;
+                -moz-user-select: none; /* Firefox */
+         -ms-user-select: none; /* Internet Explorer */
+        -khtml-user-select: none; /* KHTML browsers (e.g. Konqueror) */
+        -webkit-user-select: none; /* Chrome, Safari, and Opera */
+        -webkit-touch-callout: none; /* Disable Android and iOS callouts*/
     }
 
     .tier > div:nth-child(1) span{
@@ -46,23 +52,56 @@
         top: 50%;
         transform: translateY(-50%);
         width: 100%;
+        -webkit-text-stroke: 2px black;
     }
-    .tier div:nth-child(2){
-        display: inline-block;
+    .tier-zone{ /* .tier > div:nth-child(2) */
         box-sizing: border-box;
-        height: 140px;
+        min-height: 140px;
         padding: 10px;
         background-color: #696969;
         vertical-align: middle;
-        border-radius: 20px;
+        border-radius: 0px 20px 20px 20px;
+        margin-left: 97px;
+        border: #404040 outset;
+        border-width: 3px;
     }
     .character{
         display: inline-block;
-        height: 100%;
+        height: 100px;
+        position: relative;
+        overflow: hidden;
     }
     .character img{
         display: inline-block;
         height: 100%;
+        pointer-events: none;
+    }
+    .character.hovered::before, .character.unhovered::after{
+        content:"";
+        display: inline-block;
+        height: 80%;
+        margin: 10% 3px;
+        border: #218DC6 solid 2px;
+        border-radius: 2px;
+        box-sizing: border-box;
+        width: 2px;
+    }
+    .character.hidden img{
+        display: none;
+    }
+    .tier-zone.hovered::before{
+        content: "";
+         display: inline-block;
+         height: 91px;
+         margin: 14px 3px;
+         border: #218DC6 solid 2px;
+         border-radius: 2px;
+         box-sizing: border-box;
+         width: 2px;
+         position: absolute;
+   }
+    #footer {
+        margin-top: 10px
     }
     </style>
 </head>
@@ -70,27 +109,27 @@
     <div id="header" class="extra">
         <div id="help-wrapper">
         </div>
-        <h1>Leaderboard</h1>
+        <h1>Tier List</h1>
     </div>
     <div id="wrapper">
         <div id="list-wrapper">
-            <div class="tier" id="S">
-                <div style="background-color:#FF7F7F;"><span>S</span></div><div><div class="character"><img src="/content/portraits/Portrait_Zoe.png" alt="Zoe"></div></div>
+            <div class="tier">
+                <div style="background-color:#FF7F7F;"><span>S</span></div><div id="S" class="tier-zone"></div> <!--<div class="character" id="Zoe" title="Zoe" draggable="true"><img src="/content/portraits/Portrait_Zoe.png" alt="Zoe"></div>-->
             </div>
-            <div class="tier" id="A">
-                <div style="background-color:#FFBF7F;"><span>A</span></div><div></div>
+            <div class="tier">
+                <div style="background-color:#FFBF7F;"><span>A</span></div><div id="A" class="tier-zone"></div>
             </div>
-            <div class="tier" id="B">
-                <div style="background-color:#FFDF7F;"><span>B</span></div><div></div>
+            <div class="tier">
+                <div style="background-color:#FFDF7F;"><span>B</span></div><div id="B" class="tier-zone"></div>
             </div>
-            <div class="tier" id="C">
-                <div style="background-color:#FFFF7F;"><span>C</span></div><div></div>
+            <div class="tier">
+                <div style="background-color:#FFFF7F;"><span>C</span></div><div id="C" class="tier-zone"></div>
             </div>
-            <div class="tier" id="D">
-                <div style="background-color:#BFFF7F;"><span>D</span></div><div></div>
+            <div class="tier">
+                <div style="background-color:#BFFF7F;"><span>D</span></div><div id="D" class="tier-zone"></div>
             </div>
-            <div class="tier" id="E">
-                <div style="background-color:#7FFF7F;"><span>E</span></div><div></div>
+            <div class="tier">
+                <div style="background-color:#7FFF7F;"><span>E</span></div><div id="E" class="tier-zone"></div>
             </div>
         </div>
     </div>
@@ -98,3 +137,179 @@
         <h1>This page was created by Kabi (@Kabi in the discord, <a target="_blank" href="https://www.twitch.tv/kabimode">@kabimode</a> elsewhere)</h1>
     </div>
 </div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="/content/processing.js"></script>
+<script src="/node_modules/dom-to-image/dist/dom-to-image.min.js"></script>
+<script type="text/javascript">
+//  "character": { //handle as used by API
+//    "name":"Zoe",
+//    "image":"Portrait_Zoe.png"
+//  }
+characters = {
+    "Bday": {"name":"Birthday", "image":"Portrait_Bday.png"},
+    "CaptainHat": {"name":"Captain Hat", "image":"Portrait_CaptainHat.png"},
+    "Cole": {"name":"Cole", "image":"Portrait_Cole.png"},
+    "DarkBday": {"name":"DarkBirthday", "image":"Portrait_DarkBday.png"},
+    "Fatcat": {"name":"Fatcat", "image":"Portrait_Fatcat.png"},
+    "Forest": {"name":"Forest", "image":"Portrait_Forest.png"},
+    "Gus": {"name":"Gus & Buster", "image":"Portrait_Gus.png"},
+    "HatGang": {"name":"Hat Gang", "image":"portrait_hat_gang.png"},
+    "Insignia": {"name":"Insignia", "image":"Portrait_Insignia.png"},
+    "Kiara": {"name":"Kiara", "image":"Portrait_Kiara.png"},
+    "KidCat": {"name":"Kid Cat", "image":"portrait_kid_cat.png"},
+    "ProfessorGenius": {"name":"Professor Genius", "image":"portrait_professor_genius.png"},
+    "Snapback": {"name":"Snapback", "image":"Portrait_Snapback.png"},
+    "WashingMachine": {"name":"Washing Machine", "image":"Portrait_WashingMachine.png"},
+    "Zoe": {"name":"Zoe", "image":"Portrait_Zoe.png"}
+};
+
+function dragStart(ev) { //drag
+    //console.log(ev.target.id);
+    ev.dataTransfer.setData("ID", ev.target.id);
+    setTimeout(function(){ ev.target.classList.add("hidden"); }, 0);
+}
+
+function drop(ev) {
+    ev.preventDefault();
+    //console.log(ev.dataTransfer.getData("ID"));
+    var data = ev.dataTransfer.getData("ID");
+    if (ev.target.classList.contains("character")) {
+        ev.target.parentNode.insertBefore(document.getElementById(data), ev.target);
+        ev.target.classList.remove("hovered");
+    } else if (ev.target.classList.contains("tier-zone")){
+        ev.target.classList.remove("hovered");
+        ev.target.appendChild(document.getElementById(data));
+        ev.target.lastChild.classList.remove("unhovered");
+        if (ev.target.childElementCount > 1) {
+            ev.target.children[ev.target.childElementCount-2].classList.remove("unhovered");
+        }
+    }
+}
+function dragEnd(ev) {
+    ev.preventDefault();
+    var data = ev.target.id; // ev.dataTransfer.getData("ID")
+    document.getElementById(data).classList.remove("hidden");
+}
+function dragOver(ev) { //allowDrop
+    ev.preventDefault();
+    //console.log(ev.originalEvent.dataTransfer.types.includes("id")); make following code conditional on this upon moving to jQuery
+    if (ev.target.classList.contains("character")) {
+        ev.target.classList.add("hovered");
+    } else if (ev.target.classList.contains("tier-zone")) {
+        if (ev.target.childElementCount == 0) {
+            ev.target.classList.add("hovered");
+        } else {
+            ev.target.lastChild.classList.add("unhovered");
+        }
+    }
+}
+function dragLeave(ev) { //allowDrop
+    ev.preventDefault();
+    if (ev.target.classList.contains("character")) {
+        ev.target.classList.remove("hovered");
+    } else if (ev.target.classList.contains("tier-zone")){
+        if (ev.target.childElementCount == 0) {
+            ev.target.classList.remove("hovered");
+        } else {
+            ev.target.lastChild.classList.remove("unhovered");
+        }
+    }
+}
+
+var characterElements = document.getElementsByClassName("character");
+for (var i = 0; i < characterElements.length; i++) {
+    characterElements[i].addEventListener("dragstart", dragStart);
+}
+
+for (var i = 0; i < document.getElementsByClassName("tier-zone").length; i++) {
+    document.getElementsByClassName("tier-zone")[i].addEventListener("drop", drop);
+    document.getElementsByClassName("tier-zone")[i].addEventListener("dragover", dragOver); //pure JavaScript equivalent of commented jQuery line below
+    document.getElementsByClassName("tier-zone")[i].addEventListener("dragleave", dragLeave);
+}
+//$(".tier-zone").on("dragover", dragOver); move to jQuery to disallow non-".character" elements from triggering drag visual
+document.body.addEventListener("dragend", dragEnd);
+
+//place character in tier insertCharacter("Forest", "A")
+function insertCharacter(character, tier) {
+    if(characters.hasOwnProperty(character)){
+        //document.getElementById(tier).innerHTML += '<div class="character" id="'+ character +'" title="'+ characters[character].name +'" draggable="true"><img src="/content/portraits/'+ characters[character].image +'" alt="'+ characters[character].name +'"></div>';
+        var newChar = document.createElement("div");
+        document.getElementById(tier).appendChild(newChar);
+        newChar.classList.add("character");
+        newChar.id = character;
+        newChar.title = characters[character].name;
+        newChar.draggable = 'true';
+        newChar.innerHTML = '<img src="/content/portraits/'+ characters[character].image +'" alt="'+ characters[character].name +'">';
+        newChar.addEventListener("dragstart", dragStart);
+        //console.log(newChar);
+    }
+}
+var meta = {
+    "S": ["Zoe","HatGang","ProfessorGenius"],
+    "A": ["DarkBday","Insignia"],
+    "B": ["CaptainHat","Fatcat","Forest","Kiara","KidCat"],
+    "C": ["Bday","Random"],
+    "D": ["Cole","Gus","WashingMachine"],
+    "E": ["Snapback"]
+}
+function insertMeta(json) {
+    for (var i in json) {
+        for (var j in json[i]) {
+            //console.log(j);
+            insertCharacter(json[i][j], i)
+        }
+    }
+}
+
+//
+//insertCharacter("Zoe", "S")
+//insertCharacter("Forest", "A")
+//insertCharacter("Cole", "B")
+insertMeta(meta);
+
+var node = document.getElementById('wrapper');
+
+domtoimage.toPng(node)
+  .then(function (dataUrl) {
+    var img = new Image();
+    img.src = dataUrl;
+    document.body.appendChild(img);
+  })
+  .catch(function (error) {
+    console.error('oops, something went wrong!', error);
+ });
+/*
+const {body} = document
+
+const canvas = document.createElement('canvas')
+const ctx = canvas.getContext('2d')
+canvas.width = canvas.height = 100
+
+const tempImg = document.createElement('img')
+tempImg.addEventListener('load', onTempImageLoad)
+var svg = document.createElement("svg"); //'<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><foreignObject width="100%" height="100%"><div xmlns="http://www.w3.org/1999/xhtml">'+ document.getElementById("wrapper") +'</div></foreignObject></svg>'
+svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+svg.setAttribute("width", "100");
+svg.setAttribute("height", "100");
+svg.appendChild(document.createElement("foreignObject"));
+svg.firstChild.setAttribute("width", "100%");
+svg.firstChild.setAttribute("height", "100%");
+svg.firstChild.appendChild(document.createElement("div"));
+svg.firstChild.firstChild.setAttribute("xmlns", "http://www.w3.org/1999/svg");
+svg.firstChild.firstChild.innerHTML = "<style>em{color:red;}</style><em>I</em> lick <span>cheese</span>"; //appendChild(document.getElementById("wrapper").cloneNode(true));
+console.log(svg);
+console.log(html2text(svg));
+tempImg.src = 'data:image/svg+xml,' + encodeURIComponent(svg); //'<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><foreignObject width="100%" height="100%"><div xmlns="http://www.w3.org/1999/xhtml"><style>em{color:red;}</style><em>I</em> lick <span>cheese</span></div></foreignObject></svg>'); //<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><foreignObject width="100%" height="100%"><div xmlns="http://www.w3.org/1999/xhtml"><style>em{color:red;}</style><em>I</em> lick <span>cheese</span></div></foreignObject></svg>')
+
+const targetImg = document.createElement('img')
+body.appendChild(targetImg)
+
+function onTempImageLoad(e){
+    console.log("hey");
+    ctx.drawImage(e.target, 0, 0)
+    targetImg.src = canvas.toDataURL()
+}
+*/
+
+</script>
