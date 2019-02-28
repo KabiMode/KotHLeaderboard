@@ -3,7 +3,6 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-//var domtoimage = require('dom-to-image');
 
 var indexRouter = require('./routes/index');
 var dataRouter = require('./routes/data');
@@ -22,7 +21,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/node_modules/dom-to-image', express.static(path.join(__dirname, 'node_modules/dom-to-image')))
+app.use('/node_modules', express.static(path.join(__dirname, 'node_modules')))
 app.use('/content', express.static(path.join(__dirname, 'content')))
 app.use('/data/*', dataRouter);
 app.use('/tierlist', tierRouter);
