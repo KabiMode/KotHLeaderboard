@@ -9,8 +9,8 @@
         text-align: left;
         /*pixel outline*/
         border-width: 42px;
-        border-style: solid;
-        border-color: black;
+        border-style: groove;
+        border-color: #EACC50;
         border-radius: 42px;
         -webkit-border-image: url(/content/KotHBorderBackFull.png) 84 stretch; /* Safari 3.1-5 */
         -o-border-image: url(/content/KotHBorderBackFull.png) 84 stretch; /* Opera 11-12.1 */
@@ -106,11 +106,12 @@
         margin-top: 10px
     }
     </style>
+    <meta content='/content/portraits/Portrait_Zoe.png' property='og:image'>
+    <meta name="theme-color" content="#00FF00">
+    <link type="application/json+oembed" href="/content/tieroembed.json" />
 </head>
 <div id="major-wrapper">
     <div id="header" class="extra">
-        <div id="help-wrapper">
-        </div>
         <h1>Tier List</h1>
     </div>
     <div id="wrapper">
@@ -271,57 +272,28 @@ function insertMeta(json) {
 insertMeta(meta);
 
 var node = document.getElementById('wrapper');
-html2canvas(document.querySelector("#wrapper"), {
-    "logging": true, //Enable log (use Web Console for get Errors and Warings)
-    "proxy":"html2canvasproxy.ashx",
-    "onrendered": function(canvas) {
-        var img = new Image();
-        img.onload = function() {
-            document.body.appendChild(img);
-        };
-        img.error = function() {
-            if(window.console.log) {
-                 window.console.log("Not loaded image from canvas.toDataURL");
-            } else {
-                alert("Not loaded image from canvas.toDataURL");
-            }
-        };
-        img.src = canvas.toDataURL("image/png");
-    }
-}).then(canvas => {
-    document.body.appendChild(canvas)
+document.getElementById('list-wrapper').style.marginLeft = "27px"; //24+27
+document.getElementById('list-wrapper').style.marginRight = "27px";
+document.getElementById('wrapper').style.borderRightWidth = "15px";
+document.getElementById('wrapper').style.borderLeftWidth = "15px";
+html2canvas(document.querySelector("#wrapper")).then(canvas => {
+    console.log(canvas);
+    //document.body.appendChild(canvas)
+    var img = document.createElement("img");
+    img.src = canvas.toDataURL("image/png");
+    document.body.appendChild(img)
+    document.getElementById('list-wrapper').style.marginLeft = ""; //24+27
+    document.getElementById('list-wrapper').style.marginRight = "";
+    document.getElementById('wrapper').style.borderRightWidth = "";
+    document.getElementById('wrapper').style.borderLeftWidth = "";
 });
-/*
-const {body} = document
 
-const canvas = document.createElement('canvas')
-const ctx = canvas.getContext('2d')
-canvas.width = canvas.height = 100
-
-const tempImg = document.createElement('img')
-tempImg.addEventListener('load', onTempImageLoad)
-var svg = document.createElement("svg"); //'<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><foreignObject width="100%" height="100%"><div xmlns="http://www.w3.org/1999/xhtml">'+ document.getElementById("wrapper") +'</div></foreignObject></svg>'
-svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
-svg.setAttribute("width", "100");
-svg.setAttribute("height", "100");
-svg.appendChild(document.createElement("foreignObject"));
-svg.firstChild.setAttribute("width", "100%");
-svg.firstChild.setAttribute("height", "100%");
-svg.firstChild.appendChild(document.createElement("div"));
-svg.firstChild.firstChild.setAttribute("xmlns", "http://www.w3.org/1999/svg");
-svg.firstChild.firstChild.innerHTML = "<style>em{color:red;}</style><em>I</em> lick <span>cheese</span>"; //appendChild(document.getElementById("wrapper").cloneNode(true));
-console.log(svg);
-console.log(html2text(svg));
-tempImg.src = 'data:image/svg+xml,' + encodeURIComponent(svg); //'<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><foreignObject width="100%" height="100%"><div xmlns="http://www.w3.org/1999/xhtml"><style>em{color:red;}</style><em>I</em> lick <span>cheese</span></div></foreignObject></svg>'); //<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><foreignObject width="100%" height="100%"><div xmlns="http://www.w3.org/1999/xhtml"><style>em{color:red;}</style><em>I</em> lick <span>cheese</span></div></foreignObject></svg>')
-
-const targetImg = document.createElement('img')
-body.appendChild(targetImg)
-
-function onTempImageLoad(e){
-    console.log("hey");
-    ctx.drawImage(e.target, 0, 0)
-    targetImg.src = canvas.toDataURL()
-}
-*/
+var data = new DataTransfer();
+data.items.add("text/plain", "Howdy, partner!");
+navigator.clipboard.write(data).then(function() {
+  //console.log(“Copied to clipboard successfully!”);
+}, function() {
+  //console.error(“Unable to write to clipboard. :-(”);
+});
 
 </script>

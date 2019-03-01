@@ -6,6 +6,7 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var dataRouter = require('./routes/data');
+var tierimgRouter = require('./routes/tierimg');
 var tierRouter = require('./routes/tier');
 //var dataRouter = require('./routes/data');
 
@@ -21,9 +22,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/node_modules', express.static(path.join(__dirname, 'node_modules')))
+app.use('/node_modules/html2canvas/dist', express.static(path.join(__dirname, 'node_modules/html2canvas/dist')))
 app.use('/content', express.static(path.join(__dirname, 'content')))
 app.use('/data/*', dataRouter);
+app.use('/tier', tierimgRouter);
 app.use('/tierlist', tierRouter);
 app.use('/', indexRouter);
 
