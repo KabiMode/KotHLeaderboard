@@ -1,3 +1,4 @@
+//var html2canvas = require('html2canvas'); //('../node_modules/html2canvas/dist/npm/html2canvas.min.js');
 function draw() {
     const { createCanvas, loadImage } = require('canvas')
     const canvas = createCanvas(200, 200)
@@ -16,9 +17,12 @@ function draw() {
     ctx.lineTo(50 + text.width, 102)
     ctx.stroke()
 
-    // Draw cat with lime helmet
-    //html2canvas(document.querySelector("#wrapper")).then(canvas => { });
+    //console.log(document.createElement("div"));
+    //html2canvas(document.querySelector("#wrapper")).then(canvas => {
+    //    console.log(canvas);
+    //});
 
+    //add image
     return new Promise(resolve => {
         loadImage('http://leaderboard.kingofthehat.com/content/portraits/Portrait_Zoe.png').then((image) => {
           ctx.drawImage(image, 50, 0, 70, 70)
