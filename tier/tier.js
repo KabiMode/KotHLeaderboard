@@ -17,12 +17,18 @@ function draw() {
     ctx.stroke()
 
     // Draw cat with lime helmet
-    //loadImage('../content/portraits/Portrait_Zoe.png').then((image) => {
-    //  ctx.drawImage(image, 50, 0, 70, 70)
+    //html2canvas(document.querySelector("#wrapper")).then(canvas => { });
 
-      console.log('<img src="' + canvas.toDataURL() + '" />')
-    //})
-    return canvas;
+    return new Promise(resolve => {
+        loadImage('http://leaderboard.kingofthehat.com/content/portraits/Portrait_Zoe.png').then((image) => {
+          ctx.drawImage(image, 50, 0, 70, 70)
+
+          //console.log('<img src="' + canvas.toDataURL() + '" />')
+        resolve(canvas);
+        });
+    });
+
+    //return canvas;
 }
 
 module.exports = draw;
