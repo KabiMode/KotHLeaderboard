@@ -288,12 +288,5 @@ html2canvas(document.querySelector("#wrapper")).then(canvas => {
     document.getElementById('wrapper').style.borderLeftWidth = "";
 });
 
-var data = new DataTransfer();
-data.items.add("text/plain", "Howdy, partner!");
-navigator.clipboard.write(data).then(function() {
-  //console.log(“Copied to clipboard successfully!”);
-}, function() {
-  //console.error(“Unable to write to clipboard. :-(”);
-});
 
 </script>

@@ -1,6 +1,7 @@
 {
-   "type": "photo",
 
    "author_name": "Click here to make your own tier list!",
-   "author_url": "/tierlist",
+   "author_url": "http://leaderboard.kingofthehat.com/tierlist",
+
+   "type": "photo",
 }
