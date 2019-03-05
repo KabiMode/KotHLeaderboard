@@ -183,7 +183,13 @@ function drop(ev) {
             ev.target.children[ev.target.childElementCount-2].classList.remove("unhovered");
         }
     }
-    history.pushState(null, '', "/tierlist/"+encryptMeta(updateMeta()));
+    history.pushState(null, '', "/tierlist/"+encryptMeta({
+        "S": ["Zoe","HatGang","ProfessorGenius"],
+        "A": ["DarkBday","Insignia"],
+        "B": ["CaptainHat","Fatcat","Forest","Kiara","KidCat"],
+        "C": ["Bday","Random"],
+        "D": ["Cole","Gus","WashingMachine"],
+        "E": ["Snapback"]}));//updateMeta()));
 }
 function dragEnd(ev) {
     ev.preventDefault();
