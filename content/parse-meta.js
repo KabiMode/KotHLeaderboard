@@ -7,7 +7,7 @@ function decryptMeta(parameters){
     var i = 0;
     for (var j = 0; j < deli.length; j++) {
         for (var k = 0; k < parseInt(deli[j], 36); k++) {
-            console.log(j+": "+characters.id[chas[i]]);
+            //console.log(j+": "+characters.id[chas[i]]);
             newMeta[Object.keys(newMeta)[j]].push(characters.id[chas[i]])
             i++;
         }

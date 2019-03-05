@@ -36,4 +36,3 @@ characters = {
         "Random": {"name":"Random", "image":"Portrait_Random.png"}
     }
 }
-module.exports = characters;
