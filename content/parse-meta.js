@@ -24,13 +24,17 @@ function encryptMeta(meta){
     var chas = "";
     for (var i in meta) {
         if (meta.hasOwnProperty(i)) {
+            console.log(meta[i]);
             for (var j in meta[i]) {
                 if (meta[i].hasOwnProperty(j)) {
+                    console.log(meta[i][j]);
                     chas += characters.character[meta[i][j]].id;
                 }
             }
         }
     }
+    console.log(deli);
+    console.log(chas);
     metacode = (deli+'-'+chas).toUpperCase();
     return metacode
 }

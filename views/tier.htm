@@ -183,13 +183,8 @@ function drop(ev) {
             ev.target.children[ev.target.childElementCount-2].classList.remove("unhovered");
         }
     }
-    history.pushState(null, '', "/tierlist/"+encryptMeta({
-        "S": ["Zoe","HatGang","ProfessorGenius"],
-        "A": ["DarkBday","Insignia"],
-        "B": ["CaptainHat","Fatcat","Forest","Kiara","KidCat"],
-        "C": ["Bday","Random"],
-        "D": ["Cole","Gus","WashingMachine"],
-        "E": ["Snapback"]}));//updateMeta()));
+    console.log(updateMeta());
+    history.pushState(null, '', "/tierlist/"+encryptMeta(updateMeta()));
 }
 function dragEnd(ev) {
     ev.preventDefault();
@@ -251,13 +246,7 @@ function insertCharacter(character, tier) {
     }
 }
 var meta = {
-    "S": ["Zoe","HatGang","ProfessorGenius"],
-    "A": ["DarkBday","Insignia"],
-    "B": ["CaptainHat","Fatcat","Forest","Kiara","KidCat"],
-    "C": ["Bday","Random"],
-    "D": ["Cole","Gus","WashingMachine"],
-    "E": ["Snapback"]
-}
+
 function insertMeta(json) {
     for (var i in json) {
         for (var j in json[i]) {
