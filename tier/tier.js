@@ -9,7 +9,7 @@ function draw(metacode) {
     const canvas = Canvas.createCanvas(800, 600)
     const ctx = canvas.getContext('2d')
 
-    Canvas.registerFont('./content/LuckiestGuy-Regular.ttf', { family: 'LuckiestGuy' })
+    Canvas.registerFont(__dirname+'/../content/LuckiestGuy-Regular.ttf', { family: 'LuckiestGuy' })
 
     //ctx.addFont(font)
     // Write "Awesome!"
