@@ -105,10 +105,11 @@
     #footer {
         margin-top: 10px
     }
-    </style>
-    <meta content='/content/portraits/Portrait_Zoe.png' property='og:image'>
+    </style><!--
+    <meta content='/content/portraits/Portrait_Zoe.png' property='og:image'> {{metacode}}-->
+    <meta content='/tier/{{metacode}}' property='og:image'> <!-- {{metacode}} -->
     <meta name="theme-color" content="#EACC50">
-    <link type="application/json+oembed" href="http://leaderboard.kingofthehat.com/content/tieroembed.json" />
+    <link type="application/json+oembed" href="{{host}}/content/tieroembed.json" />
 </head>
 <div id="major-wrapper">
     <div id="header" class="extra">
@@ -140,15 +141,19 @@
         <h1>This page was created by Kabi (@Kabi in the discord, <a target="_blank" href="https://www.twitch.tv/kabimode">@kabimode</a> elsewhere)</h1>
     </div>
 </div>
+<img src="/tier/{{metacode}}" alt="">
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="/content/processing.js"></script>
-<script src="/node_modules/html2canvas/dist/html2canvas.min.js"></script>
+<script src="/content/characters.js"></script>
+<!--<script src="/content/processing.js"></script>-->
+<script src="/content/parse-meta.js"></script>
+<!--<script src="/node_modules/html2canvas/dist/html2canvas.min.js"></script>-->
 <script type="text/javascript">
 //  "character": { //handle as used by API
 //    "name":"Zoe",
 //    "image":"Portrait_Zoe.png"
 //  }
+/*
 characters = {
     "Bday": {"name":"Birthday", "image":"Portrait_Bday.png"},
     "CaptainHat": {"name":"Captain Hat", "image":"Portrait_CaptainHat.png"},
@@ -166,6 +171,7 @@ characters = {
     "WashingMachine": {"name":"Washing Machine", "image":"Portrait_WashingMachine.png"},
     "Zoe": {"name":"Zoe", "image":"Portrait_Zoe.png"}
 };
+*/
 
 function dragStart(ev) { //drag
     //console.log(ev.target.id);
@@ -235,15 +241,15 @@ document.body.addEventListener("dragend", dragEnd);
 
 //place character in tier insertCharacter("Forest", "A")
 function insertCharacter(character, tier) {
-    if(characters.hasOwnProperty(character)){
+    if(characters.character.hasOwnProperty(character)){
         //document.getElementById(tier).innerHTML += '<div class="character" id="'+ character +'" title="'+ characters[character].name +'" draggable="true"><img src="/content/portraits/'+ characters[character].image +'" alt="'+ characters[character].name +'"></div>';
         var newChar = document.createElement("div");
         document.getElementById(tier).appendChild(newChar);
         newChar.classList.add("character");
         newChar.id = character;
-        newChar.title = characters[character].name;
+        newChar.title = characters.character[character].name;
         newChar.draggable = 'true';
-        newChar.innerHTML = '<img src="/content/portraits/'+ characters[character].image +'" alt="'+ characters[character].name +'">';
+        newChar.innerHTML = '<img src="/content/portraits/'+ characters.character[character].image +'" alt="'+ characters.character[character].name +'">';
         newChar.addEventListener("dragstart", dragStart);
         //console.log(newChar);
     }
@@ -269,8 +275,14 @@ function insertMeta(json) {
 //insertCharacter("Zoe", "S")
 //insertCharacter("Forest", "A")
 //insertCharacter("Cole", "B")
-insertMeta(meta);
-
+var pathname = window.location.pathname.split("/");
+var metacode = pathname[pathname.length-1];
+if (pathname.length > 2 && metacode != "") {
+    insertMeta(decryptMeta(metacode));
+} else {
+    insertMeta(meta);
+}
+/*
 var node = document.getElementById('wrapper');
 document.getElementById('list-wrapper').style.marginLeft = "27px"; //24+27
 document.getElementById('list-wrapper').style.marginRight = "27px";
@@ -287,6 +299,6 @@ html2canvas(document.querySelector("#wrapper")).then(canvas => {
     document.getElementById('wrapper').style.borderRightWidth = "";
     document.getElementById('wrapper').style.borderLeftWidth = "";
 });
-
+*/
 
 </script>
