@@ -14,7 +14,8 @@ router.get('/:metacode', function(req, res, next) {
 router.get('/', function(req, res, next) {
     //console.log("Hello");
     //res.render('index', { title: 'Express' });
-    res.sendFile('tier.htm', { root: __dirname + '/../views' }); //{ root: __dirname }
+    const template = fs.readFileSync(__dirname + "/../views/tier.htm", "utf8")
+    res.send(mustache.render(template, {host: req.protocol+'://'+req.headers.host, metacode: ''})); //{ root: __dirname }
 });
 //req.params.cool
 module.exports = router;
