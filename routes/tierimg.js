@@ -9,6 +9,7 @@ router.get('/:metacode', function(req, res, next) {
     //draw().pngStream().pipe(res);
     var initDraw = draw(req.params.metacode);
     initDraw.then((canvas) => {
+        console.log(canvas);
         canvas.pngStream().pipe(res);
     });
 

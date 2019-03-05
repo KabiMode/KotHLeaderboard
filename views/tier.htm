@@ -1,6 +1,17 @@
 <head>
     <link rel="stylesheet" type="text/css" href="/content/style.css">
     <style media="screen">
+    #header input {
+        display: table-row-group;
+        background-color: #EACC50;
+        font-family: inherit;
+        color: inherit;
+        font-size: 1.5em;
+        border: #F6EBA6 solid 3px;
+        border-radius: 6px;
+        padding: 3px;
+        margin-bottom: .4em;
+    }
     #wrapper{
         display:inline-block;
         width: 90%;
@@ -93,15 +104,28 @@
     }
     .tier-zone.hovered::before{
         content: "";
-         display: inline-block;
-         height: 91px;
-         margin: 14px 3px;
-         border: #218DC6 solid 2px;
-         border-radius: 2px;
-         box-sizing: border-box;
-         width: 2px;
-         position: absolute;
-   }
+        display: inline-block;
+        height: 91px;
+        margin: 14px 3px;
+        border: #218DC6 solid 2px;
+        border-radius: 2px;
+        box-sizing: border-box;
+        width: 2px;
+        position: absolute;
+    }
+    #alert {
+        position:fixed;
+        z-index: 3;
+        padding: 25px;
+        left:0;
+        background-color: #4553B4;
+        border:#22245b solid;
+        border-width: 3px 3px 3px 0;
+        border-radius: 0 12px 12px 0;
+        margin-top: 20px;
+        -webkit-transition: left 0.5s ease-in-out; /* Safari */
+        transition: left 0.5s ease-in-out;
+    }
     #footer {
         margin-top: 10px
     }
@@ -114,7 +138,12 @@
 </head>
 <div id="major-wrapper">
     <div id="header" class="extra">
+    <div id="alert" style="left:-300px">
+        Link copied to clipboard!
+    </div>
         <h1>Tier List</h1>
+        <br>
+        <input type="button" name="share-button" id="share-button" value="Share this list">
     </div>
     <div id="wrapper">
         <div id="list-wrapper">
@@ -142,7 +171,7 @@
         <h1>This page was created by Kabi (@Kabi in the discord, <a target="_blank" href="https://www.twitch.tv/kabimode">@kabimode</a> elsewhere)</h1>
     </div>
 </div>
-<img src="/tier/{{metacode}}" alt="">
+<!--<img src="/tier/{{metacode}}" alt="">-->
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="/content/characters.js"></script>
@@ -150,7 +179,23 @@
 <script src="/content/parse-meta.js"></script>
 <!--<script src="/node_modules/html2canvas/dist/html2canvas.min.js"></script>-->
 <script type="text/javascript">
-
+function copyToClipboard(str) {
+  const el = document.createElement('textarea');
+  el.value = str;
+  el.setAttribute('readonly', '');
+  el.style.position = 'absolute';
+  el.style.left = '-9999px';
+  document.body.appendChild(el);
+  el.select();
+  document.execCommand('copy');
+  document.body.removeChild(el);
+};
+function custAlert(str) {
+    var box = document.getElementById("alert");
+    box.innerHTML = str;
+    box.style.left = "";
+    setTimeout(function(){box.style.left = "-300px"}, 3000);
+}
 function updateMeta() {
     var newMeta = {"S":[],"A":[],"B":[],"C":[],"D":[],"E":[]}
     var tiers = document.getElementsByClassName("tier-zone");
@@ -245,6 +290,7 @@ function insertCharacter(character, tier) {
         //console.log(newChar);
     }
 }
+/*
 var meta = {
     "S": ["Zoe","HatGang","ProfessorGenius"],
     "A": ["DarkBday","Insignia"],
@@ -253,7 +299,15 @@ var meta = {
     "D": ["Cole","Gus","WashingMachine"],
     "E": ["Snapback"]
 }
-
+*/
+var meta = {
+    "S": ["Zoe"],
+    "A": ["DarkBday","Insignia"],
+    "B": ["CaptainHat","Fatcat","Forest","KidCat"],
+    "C": ["Kiara","Bday"],
+    "D": ["WashingMachine","Cole","Gus"],
+    "E": ["Snapback"]
+}
 function insertMeta(json) {
     for (var i in json) {
         for (var j in json[i]) {
@@ -273,23 +327,9 @@ if (pathname.length > 2 && metacode != "") {
     meta = decryptMeta(metacode);
 }
 insertMeta(meta);
-/*
-var node = document.getElementById('wrapper');
-document.getElementById('list-wrapper').style.marginLeft = "27px"; //24+27
-document.getElementById('list-wrapper').style.marginRight = "27px";
-document.getElementById('wrapper').style.borderRightWidth = "15px";
-document.getElementById('wrapper').style.borderLeftWidth = "15px";
-html2canvas(document.querySelector("#wrapper")).then(canvas => {
-    console.log(canvas);
-    //document.body.appendChild(canvas)
-    var img = document.createElement("img");
-    img.src = canvas.toDataURL("image/png");
-    document.body.appendChild(img)
-    document.getElementById('list-wrapper').style.marginLeft = ""; //24+27
-    document.getElementById('list-wrapper').style.marginRight = "";
-    document.getElementById('wrapper').style.borderRightWidth = "";
-    document.getElementById('wrapper').style.borderLeftWidth = "";
-});
-*/
 
+document.getElementById("share-button").addEventListener("click", function(){
+    copyToClipboard(window.location.href);
+    custAlert("link copied to clipboard");
+});
 </script>
