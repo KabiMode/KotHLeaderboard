@@ -150,29 +150,17 @@
 <script src="/content/parse-meta.js"></script>
 <!--<script src="/node_modules/html2canvas/dist/html2canvas.min.js"></script>-->
 <script type="text/javascript">
-//  "character": { //handle as used by API
-//    "name":"Zoe",
-//    "image":"Portrait_Zoe.png"
-//  }
-/*
-characters = {
-    "Bday": {"name":"Birthday", "image":"Portrait_Bday.png"},
-    "CaptainHat": {"name":"Captain Hat", "image":"Portrait_CaptainHat.png"},
-    "Cole": {"name":"Cole", "image":"Portrait_Cole.png"},
-    "DarkBday": {"name":"DarkBirthday", "image":"Portrait_DarkBday.png"},
-    "Fatcat": {"name":"Fatcat", "image":"Portrait_Fatcat.png"},
-    "Forest": {"name":"Forest", "image":"Portrait_Forest.png"},
-    "Gus": {"name":"Gus & Buster", "image":"Portrait_Gus.png"},
-    "HatGang": {"name":"Hat Gang", "image":"portrait_hat_gang.png"},
-    "Insignia": {"name":"Insignia", "image":"Portrait_Insignia.png"},
-    "Kiara": {"name":"Kiara", "image":"Portrait_Kiara.png"},
-    "KidCat": {"name":"Kid Cat", "image":"portrait_kid_cat.png"},
-    "ProfessorGenius": {"name":"Professor Genius", "image":"portrait_professor_genius.png"},
-    "Snapback": {"name":"Snapback", "image":"Portrait_Snapback.png"},
-    "WashingMachine": {"name":"Washing Machine", "image":"Portrait_WashingMachine.png"},
-    "Zoe": {"name":"Zoe", "image":"Portrait_Zoe.png"}
-};
-*/
+
+function updateMeta() {
+    var newMeta = {"S":[],"A":[],"B":[],"C":[],"D":[],"E":[]}
+    var tiers = document.getElementsByClassName("tier-zone");
+    for (var i = 0; i < tiers.length; i++) {
+        for (var j = 0; j < tiers[i].children.length; j++) {
+            newMeta[tiers[i].id].push(tiers[i].children[j].id)
+        }
+    }
+    return newMeta;
+}
 
 function dragStart(ev) { //drag
     //console.log(ev.target.id);
@@ -195,6 +183,7 @@ function drop(ev) {
             ev.target.children[ev.target.childElementCount-2].classList.remove("unhovered");
         }
     }
+    history.pushState(null, '', "/tierlist/"+encryptMeta(updateMeta()));
 }
 function dragEnd(ev) {
     ev.preventDefault();
@@ -279,10 +268,9 @@ function insertMeta(json) {
 var pathname = window.location.pathname.split("/");
 var metacode = pathname[pathname.length-1];
 if (pathname.length > 2 && metacode != "") {
-    insertMeta(decryptMeta(metacode));
-} else {
-    insertMeta(meta);
+    meta = decryptMeta(metacode);
 }
+insertMeta(meta);
 /*
 var node = document.getElementById('wrapper');
 document.getElementById('list-wrapper').style.marginLeft = "27px"; //24+27

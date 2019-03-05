@@ -15,7 +15,25 @@ function decryptMeta(parameters){
     return newMeta;
 }
 function encryptMeta(meta){
-
+    var deli = "";
+    for (var i in meta) {
+        if (meta.hasOwnProperty(i)) {
+            var tierLength =meta[i].length;
+            deli += (tierLength).toString(36);
+        }
+    }
+    var chas = "";
+    for (var i in meta) {
+        if (meta.hasOwnProperty(i)) {
+            for (var j in meta[i]) {
+                if (meta[i].hasOwnProperty(j)) {
+                    chas += characters.character[meta[i][j]].id;
+                }
+            }
+        }
+    }
+    metacode = (deli+'-'+chas).toUpperCase();
+    return metacode
 }
 module.exports = {
     decryptMeta: decryptMeta,
