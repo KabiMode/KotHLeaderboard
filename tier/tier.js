@@ -1,23 +1,84 @@
-//var html2canvas = require('html2canvas'); //('../node_modules/html2canvas/dist/npm/html2canvas.min.js');
+var fs = require('fs');
+
+
+
 function draw(metacode) {
     //import characters from ('../content/characters.js');
-    var characters = require('../content/characters.js');
-    console.log(characters);
+    const characters = require('../content/characters.js');
     const { decryptMeta } = require('../content/parse-meta.js');
+    var meta = decryptMeta(metacode);
     //const { createCanvas, loadImage } = require('canvas');
     const Canvas = require('canvas');
-    const canvas = Canvas.createCanvas(800, 600)
+    var totalHeight = 40;
+    for (var i in meta) {
+        if (meta.hasOwnProperty(i)) {
+            var rows = (meta[i].length/9)-(meta[i].length % 9)/9+1;
+            totalHeight += 40+100*rows+10;
+        }
+    }
+    totalHeight += 30
+    const canvas = Canvas.createCanvas(800, totalHeight)
     const ctx = canvas.getContext('2d')
-
     Canvas.registerFont(__dirname+'/../content/LuckiestGuy-Regular.ttf', { family: 'LuckiestGuy' })
+
+    var placeAndDraw = function(name) {
+        return new Promise(resolve => {
+            fs.readFile(__dirname+'/../content/portraits/'+characters.character[name].image, (err, char) => {
+                if (err) {
+                    if (err.code === 'ENOENT') {
+                        console.log('File not found!');
+                    } else {
+                        throw err;
+                    }
+                }
+                const img = new Canvas.Image()
+                img.onload = () => ctx.drawImage(img, positions[name].w,positions[name].h,70,100);//positions[meta[i][j]].w,positions[meta[i][j]].h,70,100);
+                img.onerror = err => { if (err.code === 'ENOENT') {console.log('File not found!');} else {throw err;}}
+                img.src = char
+            })
+            resolve();
+        });
+    }
 
     //ctx.addFont(font)
     // Write "Awesome!"
     ctx.font = '30px LuckiestGuy'
     //ctx.font = '30px Impact'//LuckiestGuy'
     //ctx.rotate(0.1)
-    ctx.fillText(JSON.stringify(decryptMeta(metacode)), 50, 100)
+    ctx.fillText(JSON.stringify(meta), 50, 100)
     //ctx.fillText('Awesome?!', 50, 100)
+    ctx.fillStyle = "#FF0000";
+    ctx.fillRect(0, 0, 800, totalHeight);
+    var tierTop = 40;
+    //console.log(meta);
+    var positions = {};
+    for (var i in meta) {
+        if (meta.hasOwnProperty(i)) {
+            ctx.fillStyle = "#696969";
+            var rows = (meta[i].length/9)-(meta[i].length % 9)/9+1;
+            ctx.fillRect(100, tierTop, 660, 40+100*rows);
+            var width = 120;
+            for (var j in meta[i]) {
+                if (meta[i].hasOwnProperty(j)) {
+                    console.log(__dirname+'/../content/portraits/'+characters.character[meta[i][j]].image);
+                    //ctx.fillRect(width, tierTop+20, 70, 100);
+                    positions[meta[i][j]] = [];
+                    //positions[meta[i][j]].w = width;
+                    //positions[meta[i][j]].h = tierTop+20;
+
+                    positions[meta[i][j]].w = width-(70*9)*((j/9)-(j % 9)/9);
+                    positions[meta[i][j]].h = tierTop+20+100*((j/9)-(j % 9)/9);
+
+                    placeAndDraw(meta[i][j]);
+
+                    width += 70; //width, tierTop+20)//, 70, 100)
+                }
+            }
+            //meta[i]
+            tierTop += 40+100*rows+10
+        }
+    }
+
 
     // Draw line under text
     /*

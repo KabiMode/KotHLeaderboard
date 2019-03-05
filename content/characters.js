@@ -36,3 +36,4 @@ characters = {
         "Random": {"name":"Random", "image":"Portrait_Random.png", "id":"F"}
     }
 }
+module.exports = characters
