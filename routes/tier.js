@@ -9,8 +9,13 @@ router.get('/:metacode', function(req, res, next) {
     //res.render('index', { title: 'Express' });
     //res.sendFile('tier.htm', { root: __dirname + '/../views' }); //{ root: __dirname }
     console.log(req.headers.host);
-    const template = fs.readFileSync("views/tier.htm", "utf8")
+    const template = fs.readFileSync(__dirname + "/../views/tier.htm", "utf8")
     res.send(mustache.render(template, {host: req.headers.host, metacode: req.params.metacode})); //{ root: __dirname }
+});
+router.get('/', function(req, res, next) {
+    //console.log("Hello");
+    //res.render('index', { title: 'Express' });
+    res.sendFile('tier.htm', { root: __dirname + '/../views' }); //{ root: __dirname }
 });
 //req.params.cool
 module.exports = router;
