@@ -26,16 +26,11 @@ function encryptMeta(meta){
         if (meta.hasOwnProperty(i)) {
             for (var j in meta[i]) {
                 if (meta[i].hasOwnProperty(j)) {
-                    console.log(meta[i][j]);
-                    console.log(characters);
-                    console.log(characters.character);
                     chas += characters.character[meta[i][j]].id;
                 }
             }
         }
     }
-    console.log(deli);
-    console.log(chas);
     metacode = (deli+'-'+chas).toUpperCase();
     return metacode
 }
