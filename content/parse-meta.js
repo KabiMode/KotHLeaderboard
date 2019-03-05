@@ -3,7 +3,9 @@ function decryptMeta(parameters){
     //parameters = "220A00-743BCF0125689A"
     var newMeta = {"S":[],"A":[],"B":[],"C":[],"D":[],"E":[]}
     var deli = parameters.split("-")[0];
-    var chas = parameters.split("-")[1];
+    var chas = [...parameters.split("-")[1]];
+    let x = (y) => y.filter((v,i) => y.indexOf(v) === i)
+    chas = x(chas);
     var i = 0;
     for (var j = 0; j < deli.length; j++) {
         for (var k = 0; k < parseInt(deli[j], 36); k++) {
