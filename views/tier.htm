@@ -198,6 +198,8 @@
 <script type="text/javascript">
 function touchHandler(event) {
     event.preventDefault();
+    custAlert(event.type);
+    /*
     var touch = event.changedTouches[0];
 
     var simulatedEvent = document.createEvent("DragEvent");
@@ -216,6 +218,7 @@ function touchHandler(event) {
     custAlert(event.type);
     touch.target.dispatchEvent(simulatedEvent);
     //event.preventDefault();
+    */
 }
 
 function copyToClipboard(str) {
@@ -401,11 +404,11 @@ document.getElementById("share-button").addEventListener("click", function(){
     copyToClipboard(window.location.href);
     custAlert("link copied to clipboard");
 });
-//document.getElementById("wrapper").addEventListener("touchstart", touchHandler, {passive: false});//true);
-//document.getElementById("wrapper").addEventListener("touchmove", touchHandler, {passive: false});//true);
-//document.getElementById("wrapper").addEventListener("touchend", touchHandler, {passive: false});//true);
-document.getElementById("wrapper").addEventListener("touchstart", function(){custAlert("touchstart")}, {passive: false});//true);
-document.getElementById("wrapper").addEventListener("touchmove", function(){custAlert("touchmove")}, {passive: false});//true);
-document.getElementById("wrapper").addEventListener("touchend", function(){custAlert("touchend")}, {passive: false});//true);
+document.getElementById("wrapper").addEventListener("touchstart", touchHandler, {passive: false});//true);
+document.getElementById("wrapper").addEventListener("touchmove", touchHandler, {passive: false});//true);
+document.getElementById("wrapper").addEventListener("touchend", touchHandler, {passive: false});//true);
+//document.getElementById("wrapper").addEventListener("touchstart", function(){custAlert("touchstart")}, {passive: false});//true);
+//document.getElementById("wrapper").addEventListener("touchmove", function(){custAlert("touchmove")}, {passive: false});//true);
+//document.getElementById("wrapper").addEventListener("touchend", function(){custAlert("touchend")}, {passive: false});//true);
 //document.getElementById("wrapper").addEventListener("touchcancel", touchHandler, {passive: false});//true);
 </script>
