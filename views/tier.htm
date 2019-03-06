@@ -196,30 +196,6 @@
 <script src="/content/parse-meta.js"></script>
 <!--<script src="/node_modules/html2canvas/dist/html2canvas.min.js"></script>-->
 <script type="text/javascript">
-function touchHandler(event) {
-    event.preventDefault();
-    custAlert(event.type);
-    /*
-    var touch = event.changedTouches[0];
-
-    var simulatedEvent = document.createEvent("DragEvent");
-        simulatedEvent.initMouseEvent({
-        //touchstart: "mousedown",
-        //touchmove: "mousemove",
-        //touchend: "mouseup"
-        touchstart: "dragstart",
-        touchmove: "dragover",
-        touchend: "drop"
-    }[event.type], true, true, window, 1,
-        touch.screenX, touch.screenY,
-        touch.clientX, touch.clientY, false,
-        false, false, false, 0, null);
-
-    custAlert(event.type);
-    touch.target.dispatchEvent(simulatedEvent);
-    //event.preventDefault();
-    */
-}
 
 function copyToClipboard(str) {
   const el = document.createElement('textarea');
@@ -277,18 +253,22 @@ function drop(ev) {
             }
         }
     } else {
-        var data = ev.path[0].id;
-        var target = document.elementFromPoint(ev.pageX, ev.pageY);
+        var data = ev.target.id;//ev.path[0].id;
+        console.log(data);
+        var target = document.elementFromPoint(ev.changedTouches[0].pageX, ev.changedTouches[0].pageY);
+        console.log(!ev.target.classList.contains("tier-zone"));
         //
-        if (target.classList.contains("character")) {
-            target.parentNode.insertBefore(document.getElementById(data), target);
-            target.classList.remove("hovered");
-        } else if (target.classList.contains("tier-zone") && !document.getElementById(data).classList.contains("tier-zone")){
-            target.classList.remove("hovered");
-            target.appendChild(document.getElementById(data));
-            target.lastChild.classList.remove("unhovered");
-            if (target.childElementCount > 1) {
-                target.children[target.childElementCount-2].classList.remove("unhovered");
+        if (!ev.target.classList.contains("tier-zone")) {
+            if (target.classList.contains("character")) {
+                target.parentNode.insertBefore(document.getElementById(data), target);
+                target.classList.remove("hovered");
+            } else if (target.classList.contains("tier-zone")){
+                target.classList.remove("hovered");
+                target.appendChild(document.getElementById(data));
+                target.lastChild.classList.remove("unhovered");
+                if (target.childElementCount > 1) {
+                    target.children[target.childElementCount-2].classList.remove("unhovered");
+                }
             }
         }
     }
@@ -404,11 +384,8 @@ document.getElementById("share-button").addEventListener("click", function(){
     copyToClipboard(window.location.href);
     custAlert("link copied to clipboard");
 });
-document.getElementById("wrapper").addEventListener("touchstart", touchHandler, {passive: false});//true);
-document.getElementById("wrapper").addEventListener("touchmove", touchHandler, {passive: false});//true);
-document.getElementById("wrapper").addEventListener("touchend", touchHandler, {passive: false});//true);
-//document.getElementById("wrapper").addEventListener("touchstart", function(){custAlert("touchstart")}, {passive: false});//true);
-//document.getElementById("wrapper").addEventListener("touchmove", function(){custAlert("touchmove")}, {passive: false});//true);
-//document.getElementById("wrapper").addEventListener("touchend", function(){custAlert("touchend")}, {passive: false});//true);
+document.getElementById("wrapper").addEventListener("touchstart", dragStart, {passive: false});//true);
+//document.getElementById("wrapper").addEventListener("touchend", dragOver, {passive: false});//true);
+document.getElementById("wrapper").addEventListener("touchend", drop, {passive: false});//true);
 //document.getElementById("wrapper").addEventListener("touchcancel", touchHandler, {passive: false});//true);
 </script>
