@@ -7,7 +7,7 @@
 
         gtag('config', 'UA-135672746-1');
     </script>
-    <META name="viewport" content="initial-scale=0.66, user-scalable=no">
+    <META name="viewport" content="initial-scale=0.5, user-scalable=no">
     <link rel="stylesheet" type="text/css" href="/content/style.css">
     <style media="screen">
     #header input {
@@ -334,8 +334,8 @@ for (var i = 0; i < document.getElementsByClassName("tier-zone").length; i++) {
     document.getElementsByClassName("tier-zone")[i].addEventListener("drop", drop);
     document.getElementsByClassName("tier-zone")[i].addEventListener("dragover", dragOver); //pure JavaScript equivalent of commented jQuery line below
     document.getElementsByClassName("tier-zone")[i].addEventListener("dragleave", dragLeave);
-    document.getElementById("wrapper").addEventListener("touchmove", touchHandler, {passive: false});//true);
-    document.getElementById("wrapper").addEventListener("touchend", touchHandler, {passive: false});//true);
+    //document.getElementById("wrapper").addEventListener("touchmove", touchHandler, {passive: false});//true);
+    //document.getElementById("wrapper").addEventListener("touchend", touchHandler, {passive: false});//true);
 }
 //$(".tier-zone").on("dragover", dragOver); move to jQuery to disallow non-".character" elements from triggering drag visual
 document.body.addEventListener("dragend", dragEnd);
@@ -352,7 +352,7 @@ function insertCharacter(character, tier) {
         newChar.draggable = 'true';
         newChar.innerHTML = '<img src="/content/portraits/'+ characters.character[character].image +'" alt="'+ characters.character[character].name +'">';
         newChar.addEventListener("dragstart", dragStart);
-        newChar.addEventListener("touchstart", touchHandler, {passive: false});//true);
+        //newChar.addEventListener("touchstart", touchHandler, {passive: false});//true);
         //newChar.addEventListener("touchmove", dragStart);
         //console.log(newChar);
     }
@@ -399,8 +399,8 @@ document.getElementById("share-button").addEventListener("click", function(){
     copyToClipboard(window.location.href);
     custAlert("link copied to clipboard");
 });
-//document.getElementById("wrapper").addEventListener("touchstart", touchHandler, {passive: false});//true);
-//document.getElementById("wrapper").addEventListener("touchmove", touchHandler, {passive: false});//true);
-//document.getElementById("wrapper").addEventListener("touchend", touchHandler, {passive: false});//true);
+document.addEventListener("touchstart", touchHandler, {passive: false});//true);
+document.addEventListener("touchmove", touchHandler, {passive: false});//true);
+document.addEventListener("touchend", touchHandler, {passive: false});//true);
 //document.getElementById("wrapper").addEventListener("touchcancel", touchHandler, {passive: false});//true);
 </script>
