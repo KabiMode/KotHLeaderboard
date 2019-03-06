@@ -36,7 +36,9 @@ function encryptMeta(meta){
     metacode = (deli+'-'+chas).toUpperCase();
     return metacode
 }
-module.exports = {
-    decryptMeta: decryptMeta,
-    encryptMeta: encryptMeta
-};
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = {
+        decryptMeta: decryptMeta,
+        encryptMeta: encryptMeta
+    };
+}
