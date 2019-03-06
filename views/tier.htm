@@ -369,10 +369,6 @@ function insertMeta(json) {
     }
 }
 
-//
-//insertCharacter("Zoe", "S")
-//insertCharacter("Forest", "A")
-//insertCharacter("Cole", "B")
 var pathname = window.location.pathname.split("/");
 var metacode = pathname[pathname.length-1];
 if (pathname.length > 2 && metacode != "") {
@@ -385,7 +381,7 @@ document.getElementById("share-button").addEventListener("click", function(){
     custAlert("link copied to clipboard");
 });
 document.getElementById("wrapper").addEventListener("touchstart", dragStart, {passive: false});//true);
-//document.getElementById("wrapper").addEventListener("touchend", dragOver, {passive: false});//true);
+document.getElementById("wrapper").addEventListener("touchmove", dragOver, {passive: false});//true);
 document.getElementById("wrapper").addEventListener("touchend", drop, {passive: false});//true);
 //document.getElementById("wrapper").addEventListener("touchcancel", touchHandler, {passive: false});//true);
 </script>
