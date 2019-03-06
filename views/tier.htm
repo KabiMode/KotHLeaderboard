@@ -254,6 +254,7 @@ function dragStart(ev) { //drag
         console.log("desktop");
     } else if (true) {
         console.log("mobile");
+        custAlert("mobile");
     }
 }
 function drop(ev) {
@@ -400,8 +401,8 @@ document.getElementById("share-button").addEventListener("click", function(){
     copyToClipboard(window.location.href);
     custAlert("link copied to clipboard");
 });
-document.addEventListener("touchstart", touchHandler, {passive: false});//true);
-document.addEventListener("touchmove", touchHandler, {passive: false});//true);
-document.addEventListener("touchend", touchHandler, {passive: false});//true);
+document.getElementById("wrapper").addEventListener("touchstart", touchHandler, {passive: false});//true);
+document.getElementById("wrapper").addEventListener("touchmove", touchHandler, {passive: false});//true);
+document.getElementById("wrapper").addEventListener("touchend", touchHandler, {passive: false});//true);
 //document.getElementById("wrapper").addEventListener("touchcancel", touchHandler, {passive: false});//true);
 </script>
