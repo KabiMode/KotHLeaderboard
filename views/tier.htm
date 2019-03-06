@@ -195,6 +195,27 @@
 <script src="/content/parse-meta.js"></script>
 <!--<script src="/node_modules/html2canvas/dist/html2canvas.min.js"></script>-->
 <script type="text/javascript">
+function touchHandler(event) {
+    var touch = event.changedTouches[0];
+
+    var simulatedEvent = document.createEvent("DragEvent");
+        simulatedEvent.initMouseEvent({
+        //touchstart: "mousedown",
+        //touchmove: "mousemove",
+        //touchend: "mouseup"
+        touchstart: "dragstart",
+        touchmove: "dragover",
+        touchend: "drop"
+    }[event.type], true, true, window, 1,
+        touch.screenX, touch.screenY,
+        touch.clientX, touch.clientY, false,
+        false, false, false, 0, null);
+
+
+    touch.target.dispatchEvent(simulatedEvent);
+    event.preventDefault();
+}
+
 function copyToClipboard(str) {
   const el = document.createElement('textarea');
   el.value = str;
@@ -224,24 +245,45 @@ function updateMeta() {
 }
 
 function dragStart(ev) { //drag
-    //console.log(ev.target.id);
-    ev.dataTransfer.setData("ID", ev.target.id);
-    setTimeout(function(){ ev.target.classList.add("hidden"); }, 0);
+    //console.log(ev.target.id);'
+    if (ev.dataTransfer != null) {
+        ev.dataTransfer.setData("ID", ev.target.id);
+        setTimeout(function(){ ev.target.classList.add("hidden"); }, 0);
+        console.log("desktop");
+    } else if (true) {
+        console.log("mobile");
+    }
 }
-
 function drop(ev) {
     ev.preventDefault();
-    //console.log(ev.dataTransfer.getData("ID"));
-    var data = ev.dataTransfer.getData("ID");
-    if (ev.target.classList.contains("character")) {
-        ev.target.parentNode.insertBefore(document.getElementById(data), ev.target);
-        ev.target.classList.remove("hovered");
-    } else if (ev.target.classList.contains("tier-zone")){
-        ev.target.classList.remove("hovered");
-        ev.target.appendChild(document.getElementById(data));
-        ev.target.lastChild.classList.remove("unhovered");
-        if (ev.target.childElementCount > 1) {
-            ev.target.children[ev.target.childElementCount-2].classList.remove("unhovered");
+    if (ev.dataTransfer != null) {
+        var data = ev.dataTransfer.getData("ID");
+        //
+        if (ev.target.classList.contains("character")) {
+            ev.target.parentNode.insertBefore(document.getElementById(data), ev.target);
+            ev.target.classList.remove("hovered");
+        } else if (ev.target.classList.contains("tier-zone")){
+            ev.target.classList.remove("hovered");
+            ev.target.appendChild(document.getElementById(data));
+            ev.target.lastChild.classList.remove("unhovered");
+            if (ev.target.childElementCount > 1) {
+                ev.target.children[ev.target.childElementCount-2].classList.remove("unhovered");
+            }
+        }
+    } else {
+        var data = ev.path[0].id;
+        var target = document.elementFromPoint(ev.pageX, ev.pageY);
+        //
+        if (target.classList.contains("character")) {
+            target.parentNode.insertBefore(document.getElementById(data), target);
+            target.classList.remove("hovered");
+        } else if (target.classList.contains("tier-zone") && !document.getElementById(data).classList.contains("tier-zone")){
+            target.classList.remove("hovered");
+            target.appendChild(document.getElementById(data));
+            target.lastChild.classList.remove("unhovered");
+            if (target.childElementCount > 1) {
+                target.children[target.childElementCount-2].classList.remove("unhovered");
+            }
         }
     }
     //console.log(updateMeta());
@@ -255,13 +297,16 @@ function dragEnd(ev) {
 function dragOver(ev) { //allowDrop
     ev.preventDefault();
     //console.log(ev.originalEvent.dataTransfer.types.includes("id")); make following code conditional on this upon moving to jQuery
-    if (ev.target.classList.contains("character")) {
-        ev.target.classList.add("hovered");
-    } else if (ev.target.classList.contains("tier-zone")) {
-        if (ev.target.childElementCount == 0) {
+
+    if (ev.dataTransfer != null) {
+        if (ev.target.classList.contains("character")) {
             ev.target.classList.add("hovered");
-        } else {
-            ev.target.lastChild.classList.add("unhovered");
+        } else if (ev.target.classList.contains("tier-zone")) {
+            if (ev.target.childElementCount == 0) {
+                ev.target.classList.add("hovered");
+            } else {
+                ev.target.lastChild.classList.add("unhovered");
+            }
         }
     }
 }
@@ -277,16 +322,19 @@ function dragLeave(ev) { //allowDrop
         }
     }
 }
-
+/*
 var characterElements = document.getElementsByClassName("character");
 for (var i = 0; i < characterElements.length; i++) {
     characterElements[i].addEventListener("dragstart", dragStart);
+    characterElements[i].addEventListener("touchstart", touchHandler, {passive: false});//true);
 }
-
+*/
 for (var i = 0; i < document.getElementsByClassName("tier-zone").length; i++) {
     document.getElementsByClassName("tier-zone")[i].addEventListener("drop", drop);
     document.getElementsByClassName("tier-zone")[i].addEventListener("dragover", dragOver); //pure JavaScript equivalent of commented jQuery line below
     document.getElementsByClassName("tier-zone")[i].addEventListener("dragleave", dragLeave);
+    document.getElementById("wrapper").addEventListener("touchmove", touchHandler, {passive: false});//true);
+    document.getElementById("wrapper").addEventListener("touchend", touchHandler, {passive: false});//true);
 }
 //$(".tier-zone").on("dragover", dragOver); move to jQuery to disallow non-".character" elements from triggering drag visual
 document.body.addEventListener("dragend", dragEnd);
@@ -303,6 +351,8 @@ function insertCharacter(character, tier) {
         newChar.draggable = 'true';
         newChar.innerHTML = '<img src="/content/portraits/'+ characters.character[character].image +'" alt="'+ characters.character[character].name +'">';
         newChar.addEventListener("dragstart", dragStart);
+        newChar.addEventListener("touchstart", touchHandler, {passive: false});//true);
+        //newChar.addEventListener("touchmove", dragStart);
         //console.log(newChar);
     }
 }
@@ -348,4 +398,8 @@ document.getElementById("share-button").addEventListener("click", function(){
     copyToClipboard(window.location.href);
     custAlert("link copied to clipboard");
 });
+//document.getElementById("wrapper").addEventListener("touchstart", touchHandler, {passive: false});//true);
+//document.getElementById("wrapper").addEventListener("touchmove", touchHandler, {passive: false});//true);
+//document.getElementById("wrapper").addEventListener("touchend", touchHandler, {passive: false});//true);
+//document.getElementById("wrapper").addEventListener("touchcancel", touchHandler, {passive: false});//true);
 </script>
