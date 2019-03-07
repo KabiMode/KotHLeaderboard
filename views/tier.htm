@@ -118,7 +118,7 @@
     }
     .character.hidden img{
         /*display: none;*/
-        width: 81.42px;
+        width: 0;
     }
     .tier-zone.hovered::before{
         content: "";
@@ -268,7 +268,6 @@ function dragStart(ev) { //drag
     } else if (true) {
         console.log("mobile");
         setTimeout(function(){ ev.target.classList.add("hidden"); }, 0);
-        //custAlert("mobile");
     }
 }
 function drop(ev) {
@@ -289,7 +288,7 @@ function drop(ev) {
         }
     } else {
         var data = ev.target.id;//ev.path[0].id;
-        var target = document.elementFromPoint(ev.changedTouches[0].pageX, ev.changedTouches[0].pageY);
+        var target = document.elementFromPoint(ev.changedTouches[0].clientX, ev.changedTouches[0].clientY);
         //
         if (!ev.target.classList.contains("tier-zone")) {
             if (target.classList.contains("character")) {
@@ -309,11 +308,15 @@ function drop(ev) {
     history.pushState(null, '', "/tierlist/"+encryptMeta(updateMeta()));
 }
 function dragEnd(ev) {
-    ev.preventDefault();
-    var data = ev.target.id; // ev.dataTransfer.getData("ID")
-    document.getElementById(data).classList.remove("hidden");
-    if (ev.type == "touchend") {
-        tmPrev = null;
+    if (ev.cancelable) {
+        ev.preventDefault();
+    }
+    if (ev.target.classList.contains("character")) {
+        var data = ev.target.id; // ev.dataTransfer.getData("ID")
+        document.getElementById(data).classList.remove("hidden");
+        if (ev.type == "touchend") {
+            tmPrev = null;
+        }
     }
 }
 function dragOver(ev) { //allowDrop
@@ -346,13 +349,16 @@ function dragLeave(ev) { //allowDrop
 var tmPrev;
 function touchMove(ev) {
     ev.preventDefault();
-    if (tmPrev != document.elementFromPoint(ev.changedTouches[0].pageX, ev.changedTouches[0].pageY) && ev.target.classList.contains("character")) {
+    var posX = ev.changedTouches[0].clientX;
+    var posY = ev.changedTouches[0].clientY;
+    var posEl = document.elementFromPoint(posX, posY);
+    if (tmPrev != posEl && ev.target.classList.contains("character")) {
         if (tmPrev == null) {
             tmPrev = ev.path[1];
         }
         //console.log(document.elementFromPoint(ev.changedTouches[0].pageX, ev.changedTouches[0].pageY));
         //dragOver
-        var el = document.elementFromPoint(ev.changedTouches[0].pageX, ev.changedTouches[0].pageY);
+        var el = posEl;//document.elementFromPoint(posX, posY);
         if (el.classList.contains("character")) {
             el.classList.add("hovered");
         } else if (el.classList.contains("tier-zone")) {
@@ -363,8 +369,8 @@ function touchMove(ev) {
             }
         }
         //dragLeave
-        if (tmPrev != document.elementFromPoint(ev.changedTouches[0].pageX, ev.changedTouches[0].pageY)) {
-            el = tmPrev;
+        if (tmPrev != document.elementFromPoint(posX, posY)) {
+            el = tmPrev; // TODO: if a character is released on the first frame of being dragged over a new element, the cursor will not be hidden
             if (el.classList.contains("character")) {
                 el.classList.remove("hovered");
             } else if (el.classList.contains("tier-zone")){
@@ -376,7 +382,7 @@ function touchMove(ev) {
             }
         }
     }
-    tmPrev = document.elementFromPoint(ev.changedTouches[0].pageX, ev.changedTouches[0].pageY);
+    tmPrev = posEl;
 }
 /*
 var characterElements = document.getElementsByClassName("character");
@@ -389,8 +395,8 @@ for (var i = 0; i < document.getElementsByClassName("tier-zone").length; i++) {
     document.getElementsByClassName("tier-zone")[i].addEventListener("drop", drop);
     document.getElementsByClassName("tier-zone")[i].addEventListener("dragover", dragOver); //pure JavaScript equivalent of commented jQuery line below
     document.getElementsByClassName("tier-zone")[i].addEventListener("dragleave", dragLeave);
-    //document.getElementById("wrapper").addEventListener("touchmove", touchHandler, {passive: false});//true);
-    //document.getElementById("wrapper").addEventListener("touchend", touchHandler, {passive: false});//true);
+    document.getElementsByClassName("tier-zone")[i].addEventListener("touchend", drop, {passive: false});//true);
+    document.getElementsByClassName("tier-zone")[i].addEventListener("touchmove", touchMove, {passive: false});//true);
 }
 //$(".tier-zone").on("dragover", dragOver); move to jQuery to disallow non-".character" elements from triggering drag visual
 document.body.addEventListener("dragend", dragEnd);
@@ -407,8 +413,8 @@ function insertCharacter(character, tier) {
         newChar.draggable = 'true';
         newChar.innerHTML = '<img src="/content/portraits/'+ characters.character[character].image +'" alt="'+ characters.character[character].name +'">';
         newChar.addEventListener("dragstart", dragStart);
+        newChar.addEventListener("touchstart", dragStart, {passive: false});//true);
         //newChar.addEventListener("touchstart", touchHandler, {passive: false});//true);
-        //newChar.addEventListener("touchmove", dragStart);
         //console.log(newChar);
     }
 }
@@ -450,9 +456,9 @@ insertMeta(meta);
 //    copyToClipboard(window.location.href);
 //    custAlert("link copied to clipboard");
 //});
-document.getElementById("wrapper").addEventListener("touchstart", dragStart, {passive: false});//true);
-document.getElementById("wrapper").addEventListener("touchmove", touchMove, {passive: false});//true);
-document.getElementById("wrapper").addEventListener("touchend", drop, {passive: false});//true);
+//document.getElementById("wrapper").addEventListener("touchstart", dragStart, {passive: false});//true);
+//document.getElementById("wrapper").addEventListener("touchmove", touchMove, {passive: false});//true);
+//document.getElementById("wrapper").addEventListener("touchend", drop, {passive: false});//true);
 document.getElementById("wrapper").addEventListener("touchend", dragEnd, {passive: false});//true);
 document.getElementById("wrapper").addEventListener("touchcancel", dragEnd, {passive: false});//true);
 //document.body.addEventListener("touchend", dragEnd, {passive: false});//true);
