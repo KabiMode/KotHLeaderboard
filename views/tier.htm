@@ -91,7 +91,7 @@
     }
     .character{
         display: inline-block;
-        height: 100px;
+        height: 114px;
         position: relative;
         overflow: hidden;
         cursor: grab;
@@ -117,7 +117,8 @@
         width: 2px;
     }
     .character.hidden img{
-        display: none;
+        /*display: none;*/
+        width: 81.42px;
     }
     .tier-zone.hovered::before{
         content: "";
@@ -197,7 +198,7 @@
 <!--<script src="/node_modules/html2canvas/dist/html2canvas.min.js"></script>-->
 <script type="text/javascript">
 
-function copyToClipboard(str) {
+function copyToClipboard(str) { // TODO: doesnt work on mobile at the moment (tested in safari, iOS)
   const el = document.createElement('textarea');
   el.value = str;
   el.setAttribute('readonly', '');
@@ -233,6 +234,7 @@ function dragStart(ev) { //drag
         console.log("desktop");
     } else if (true) {
         console.log("mobile");
+        setTimeout(function(){ ev.target.classList.add("hidden"); }, 0);
         //custAlert("mobile");
     }
 }
@@ -254,9 +256,7 @@ function drop(ev) {
         }
     } else {
         var data = ev.target.id;//ev.path[0].id;
-        console.log(data);
         var target = document.elementFromPoint(ev.changedTouches[0].pageX, ev.changedTouches[0].pageY);
-        console.log(!ev.target.classList.contains("tier-zone"));
         //
         if (!ev.target.classList.contains("tier-zone")) {
             if (target.classList.contains("character")) {
@@ -279,12 +279,14 @@ function dragEnd(ev) {
     ev.preventDefault();
     var data = ev.target.id; // ev.dataTransfer.getData("ID")
     document.getElementById(data).classList.remove("hidden");
+    if (ev.type == "touchend") {
+        tmPrev = null;
+    }
 }
 function dragOver(ev) { //allowDrop
     ev.preventDefault();
     //console.log(ev.originalEvent.dataTransfer.types.includes("id")); make following code conditional on this upon moving to jQuery
-
-    if (ev.dataTransfer != null) {
+    //if (ev.dataTransfer != null) {
         if (ev.target.classList.contains("character")) {
             ev.target.classList.add("hovered");
         } else if (ev.target.classList.contains("tier-zone")) {
@@ -294,7 +296,7 @@ function dragOver(ev) { //allowDrop
                 ev.target.lastChild.classList.add("unhovered");
             }
         }
-    }
+    //}
 }
 function dragLeave(ev) { //allowDrop
     ev.preventDefault();
@@ -307,6 +309,41 @@ function dragLeave(ev) { //allowDrop
             ev.target.lastChild.classList.remove("unhovered");
         }
     }
+}
+var tmPrev;
+function touchMove(ev) {
+    ev.preventDefault();
+    if (tmPrev != document.elementFromPoint(ev.changedTouches[0].pageX, ev.changedTouches[0].pageY) && ev.target.classList.contains("character")) {
+        if (tmPrev == null) {
+            tmPrev = ev.path[1];
+        }
+        //console.log(document.elementFromPoint(ev.changedTouches[0].pageX, ev.changedTouches[0].pageY));
+        //dragOver
+        var el = document.elementFromPoint(ev.changedTouches[0].pageX, ev.changedTouches[0].pageY);
+        if (el.classList.contains("character")) {
+            el.classList.add("hovered");
+        } else if (el.classList.contains("tier-zone")) {
+            if (el.childElementCount == 0) {
+                el.classList.add("hovered");
+            } else {
+                el.lastChild.classList.add("unhovered");
+            }
+        }
+        //dragLeave
+        if (tmPrev != document.elementFromPoint(ev.changedTouches[0].pageX, ev.changedTouches[0].pageY)) {
+            el = tmPrev;
+            if (el.classList.contains("character")) {
+                el.classList.remove("hovered");
+            } else if (el.classList.contains("tier-zone")){
+                if (el.childElementCount == 0) {
+                    el.classList.remove("hovered");
+                } else {
+                    el.lastChild.classList.remove("unhovered");
+                }
+            }
+        }
+    }
+    tmPrev = document.elementFromPoint(ev.changedTouches[0].pageX, ev.changedTouches[0].pageY);
 }
 /*
 var characterElements = document.getElementsByClassName("character");
@@ -381,7 +418,9 @@ document.getElementById("share-button").addEventListener("click", function(){
     custAlert("link copied to clipboard");
 });
 document.getElementById("wrapper").addEventListener("touchstart", dragStart, {passive: false});//true);
-document.getElementById("wrapper").addEventListener("touchmove", dragOver, {passive: false});//true);
+document.getElementById("wrapper").addEventListener("touchmove", touchMove, {passive: false});//true);
 document.getElementById("wrapper").addEventListener("touchend", drop, {passive: false});//true);
-//document.getElementById("wrapper").addEventListener("touchcancel", touchHandler, {passive: false});//true);
+document.getElementById("wrapper").addEventListener("touchend", dragEnd, {passive: false});//true);
+document.getElementById("wrapper").addEventListener("touchcancel", dragEnd, {passive: false});//true);
+//document.body.addEventListener("touchend", dragEnd, {passive: false});//true);
 </script>
