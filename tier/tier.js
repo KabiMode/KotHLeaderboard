@@ -21,9 +21,10 @@ function draw(metacode) {
         "col": 8,
         "fontsize": 60,
     }
+    var colors = {"S":"#FF7F7F","A":"#FFBF7F","B":"#FFDF7F","C":"#FFFF7F","D":"#BFFF7F","E":"#7FFF7F"};
     var totalHeight = dims.vmargin*2-dims.tierspacing;
     for (var i in meta) {
-        if (meta.hasOwnProperty(i)) {
+        if (colors.hasOwnProperty(i) && meta.hasOwnProperty(i)) {
             var rows = (meta[i].length/dims.col)-(meta[i].length % dims.col)/dims.col+1;
             totalHeight += dims.tiermargin*2+dims.himage*rows+dims.tierspacing;
         }
@@ -56,11 +57,10 @@ function draw(metacode) {
     //ctx.fillStyle = "#FF0000";
     //ctx.fillRect(0, 0, dims.wtot, totalHeight);
     var tierTop = dims.vmargin;
-    var colors = {"S":"#FF7F7F","A":"#FFBF7F","B":"#FFDF7F","C":"#FFFF7F","D":"#BFFF7F","E":"#7FFF7F"};
     var positions = {};
     var promises = [];
     for (var i in meta) {
-        if (meta.hasOwnProperty(i)) {
+        if (colors.hasOwnProperty(i) && meta.hasOwnProperty(i)) {
             //tab
             ctx.fillStyle = colors[i];
             ctx.shadowColor = "rgba(0,0,0,0)";
