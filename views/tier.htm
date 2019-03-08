@@ -24,12 +24,20 @@
     }
     #wrapper{
         display:inline-block;
-        box-sizing: border-box;
         width: 90%;
         min-width: 782px;
         max-width: 1300px;
-        text-align: left;
+        text-align: center;
         /*pixel outline*/
+        z-index: 2;
+        position: relative;
+    }
+
+    #list-wrapper {
+        display:inline-block;
+        box-sizing: border-box;
+        width: 100%;
+        text-align: left;
         border-width: 42px;
         border-style: groove;
         border-color: #EACC50;
@@ -39,11 +47,7 @@
         border-image: url(/content/KotHBorderBackFull.png) 84 stretch;
         background-color:#7C5620;
         background-clip: padding-box;
-        z-index: 2;
-        position: relative;
-    }
-    #list-wrapper {
-        margin: 24px 0px;
+        padding: 24px 0px;
     }
     .tier{
         margin: 3px 0px;
@@ -84,10 +88,17 @@
         padding: 10px;
         background-color: #696969;
         vertical-align: middle;
-        border-radius: 0px 20px 20px 20px;
-        margin-left: 97px;
         border: #404040 outset;
         border-width: 3px;
+        border-radius: 20px;
+    }
+    .tier .tier-zone{ /* .tier > div:nth-child(2) */
+        border-top-left-radius: 0px;
+        margin-left: 97px;
+    }
+    #exclude {
+        margin-top: 10px;
+        text-align: left;
     }
     .character{
         display: inline-block;
@@ -174,13 +185,13 @@
             margin-top: 1.7em;
             margin-right: 0.9em;
         }
-        .tier-zone {
+        .tier .tier-zone {
             min-height: 100px;
         }
-        .tier-zone:empty {
+        .tier .tier-zone:empty {
             border-bottom-left-radius: 0;
         }
-        .tier-zone.hovered::before{
+        .tier .tier-zone.hovered::before{
             height: 74px;
             margin: 0px 3px;
         }
@@ -222,6 +233,7 @@
                 <div style="background-color:#7FFF7F;"><span>E</span></div><div id="E" class="tier-zone"></div>
             </div>
         </div>
+        <div id="exclude" class="tier-zone"></div>
     </div>
     <div id="footer" class="extra">
         <h1>This page was created by Kabi (@Kabi in the discord, <a target="_blank" href="https://www.twitch.tv/kabimode">@kabimode</a> elsewhere)</h1>
@@ -252,8 +264,10 @@ function updateMeta() {
     var newMeta = {"S":[],"A":[],"B":[],"C":[],"D":[],"E":[]}
     var tiers = document.getElementsByClassName("tier-zone");
     for (var i = 0; i < tiers.length; i++) {
-        for (var j = 0; j < tiers[i].children.length; j++) {
-            newMeta[tiers[i].id].push(tiers[i].children[j].id)
+        if (newMeta.hasOwnProperty(tiers[i].id)) {
+            for (var j = 0; j < tiers[i].children.length; j++) {
+                newMeta[tiers[i].id].push(tiers[i].children[j].id)
+            }
         }
     }
     return newMeta;
@@ -280,7 +294,7 @@ function drop(ev) {
             ev.target.classList.remove("hovered");
         } else if (ev.target.classList.contains("tier-zone")){
             ev.target.classList.remove("hovered");
-            ev.target.appendChild(document.getElementById(data));
+            if (document.getElementById(data)) ev.target.appendChild(document.getElementById(data));
             ev.target.lastChild.classList.remove("unhovered");
             if (ev.target.childElementCount > 1) {
                 ev.target.children[ev.target.childElementCount-2].classList.remove("unhovered");
@@ -311,11 +325,13 @@ function dragEnd(ev) {
     if (ev.cancelable) {
         ev.preventDefault();
     }
-    if (ev.target.classList.contains("character")) {
-        var data = ev.target.id; // ev.dataTransfer.getData("ID")
-        document.getElementById(data).classList.remove("hidden");
-        if (ev.type == "touchend") {
-            tmPrev = null;
+    if (ev.target.nodeType == 1) {
+        if (ev.target.classList.contains("character")) {
+            var data = ev.target.id; // ev.dataTransfer.getData("ID")
+            document.getElementById(data).classList.remove("hidden");
+            if (ev.type == "touchend") {
+                tmPrev = null;
+            }
         }
     }
 }
@@ -432,16 +448,37 @@ var meta = {
     "S": ["Zoe"],
     "A": ["DarkBday","Insignia"],
     "B": ["CaptainHat","Fatcat","Forest","KidCat"],
-    "C": ["Kiara","Bday"],
+    "C": ["Kiara","Bday","Random"],
     "D": ["WashingMachine","Cole","Gus"],
     "E": ["Snapback"]
 }
+var roster = [
+    "Bday",
+    "Kiara",
+    "CaptainHat",
+    "Cole",
+    "Snapback",
+    "WashingMachine",
+    "DarkBday",
+    "Zoe",
+    "Forest",
+    "Fatcat",
+    "Insignia",
+    "KidCat",
+    "Gus",
+    "Random"
+]
 function insertMeta(json) {
     for (var i in json) {
         for (var j in json[i]) {
             //console.log(j);
+            var index = roster.indexOf(json[i][j]);
+            if (index !== -1) roster.splice(index, 1);
             insertCharacter(json[i][j], i)
         }
+    }
+    for (var i = 0; i < roster.length; i++) {
+        insertCharacter(roster[i], "exclude");
     }
 }
 

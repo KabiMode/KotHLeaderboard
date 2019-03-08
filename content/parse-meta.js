@@ -1,7 +1,7 @@
 function decryptMeta(parameters){
     // url format: /220A00
     //parameters = "220A00-743BCF0125689A"
-    var newMeta = {"S":[],"A":[],"B":[],"C":[],"D":[],"E":[]}
+    var newMeta = {"S":[],"A":[],"B":[],"C":[],"D":[],"E":[],"exclude":[]}
     var deli = parameters.split("-")[0];
     var chas = [...parameters.split("-")[1]];
     let x = (y) => y.filter((v,i) => y.indexOf(v) === i)
