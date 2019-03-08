@@ -10,198 +10,438 @@
     <META name="viewport" content="initial-scale=0.65, user-scalable=no">
     <link rel="stylesheet" type="text/css" href="/content/style.css">
     <style media="screen">
-    #header input {
-        display: table-row-group;
-        background-color: #EACC50;
-        font-family: inherit;
-        color: inherit;
-        font-size: 1.5em;
-        border: #F6EBA6 solid 3px;
-        border-radius: 6px;
-        padding: 3px;
-        margin-bottom: .4em;
-        cursor: pointer;
-    }
-    #wrapper{
-        display:inline-block;
-        width: 90%;
-        min-width: 782px;
-        max-width: 1300px;
-        text-align: center;
-        /*pixel outline*/
-        z-index: 2;
-        position: relative;
-    }
-
-    #list-wrapper {
-        display:inline-block;
-        box-sizing: border-box;
-        width: 100%;
-        text-align: left;
-        border-width: 42px;
-        border-style: groove;
-        border-color: #EACC50;
-        border-radius: 42px;
-        -webkit-border-image: url(/content/KotHBorderBackFull.png) 84 stretch; /* Safari 3.1-5 */
-        -o-border-image: url(/content/KotHBorderBackFull.png) 84 stretch; /* Opera 11-12.1 */
-        border-image: url(/content/KotHBorderBackFull.png) 84 stretch;
-        background-color:#7C5620;
-        background-clip: padding-box;
-        padding: 24px 0px;
-    }
-    .tier{
-        margin: 3px 0px;
-    }
-    .tier > div:nth-child(1){
-        width: 100px;
-        height: 100px;
-        display: inline-block;
-        position: relative;
-        float: left;
-        margin: 0px 0px 0px 0px;
-        box-sizing: border-box;
-        font-size: 60px;
-        text-shadow: 0 4px black;
-        text-align: center;
-        vertical-align: middle;
-        border: #404040 outset;
-        border-width: 3px 0px 3px 3px;
-        border-radius: 20px 0px 0px 20px;
-                -moz-user-select: none; /* Firefox */
-         -ms-user-select: none; /* Internet Explorer */
-        -khtml-user-select: none; /* KHTML browsers (e.g. Konqueror) */
-        -webkit-user-select: none; /* Chrome, Safari, and Opera */
-        -webkit-touch-callout: none; /* Disable Android and iOS callouts*/
-    }
-
-    .tier > div:nth-child(1) span{
-        position: absolute;
-        display: block;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 100%;
-        -webkit-text-stroke: 2px black;
-    }
-    .tier-zone{ /* .tier > div:nth-child(2) */
-        box-sizing: border-box;
-        min-height: 140px;
-        padding: 10px;
-        background-color: #696969;
-        vertical-align: middle;
-        border: #404040 outset;
-        border-width: 3px;
-        border-radius: 20px;
-    }
-    .tier .tier-zone{ /* .tier > div:nth-child(2) */
-        border-top-left-radius: 0px;
-        margin-left: 97px;
-    }
-    #exclude {
-        margin-top: 10px;
-        text-align: left;
-    }
-    .character{
-        display: inline-block;
-        height: 114px;
-        position: relative;
-        overflow: hidden;
-        cursor: grab;
-    }
-    .character:active {
-        cursor: grabbing;
-        cursor: -moz-grabbing;
-        cursor: -webkit-grabbing;
-    }
-    .character img{
-        display: inline-block;
-        height: 100%;
-        pointer-events: none;
-    }
-    .character.hovered::before, .character.unhovered::after{
-        content:"";
-        display: inline-block;
-        height: 80%;
-        margin: 10% 3px;
-        border: #218DC6 solid 2px;
-        border-radius: 2px;
-        box-sizing: border-box;
-        width: 2px;
-    }
-    .character.hidden img{
-        /*display: none;*/
-        width: 0;
-    }
-    .tier-zone.hovered::before{
-        content: "";
-        display: inline-block;
-        height: 91px;
-        margin: 14px 3px;
-        border: #218DC6 solid 2px;
-        border-radius: 2px;
-        box-sizing: border-box;
-        width: 2px;
-        position: absolute;
-    }
-    #alert {
-        position:fixed;
-        z-index: 3;
-        padding: 25px;
-        left:0;
-        background-color: #4553B4;
-        border:#22245b solid;
-        border-width: 3px 3px 3px 0;
-        border-radius: 0 12px 12px 0;
-        margin-top: 20px;
-        -webkit-transition: left 0.5s ease-in-out; /* Safari */
-        transition: left 0.5s ease-in-out;
-        box-shadow: 0px 0px 10px rgba(0,0,0,0.7);
-    }
-    #footer {
-        margin-top: 10px
-    }
-
-    @media (max-width: 800px), (max-height: 600px) {
-        #major-wrapper:before {
-            background: #1382BA;
-            -webkit-transform: ;
-            transform: ;
-            animation: ;
+        #header input {
+            display: table-row-group;
+            background-color: #EACC50;
+            font-family: inherit;
+            color: inherit;
+            font-size: 1.5em;
+            border: #F6EBA6 solid 3px;
+            border-radius: 6px;
+            padding: 3px;
+            margin-bottom: .4em;
+            cursor: pointer;
         }
-        #wrapper {
-            min-width: 370px;
-            width: 96%;
+        #wrapper{
+            display:inline-block;
+            width: 90%;
+            min-width: 782px;
+            max-width: 1300px;
+            text-align: center;
+            /*pixel outline*/
+            z-index: 2;
+            position: relative;
         }
-        #header {
+
+        #list-wrapper {
+            display:inline-block;
+            box-sizing: border-box;
+            width: 100%;
+            text-align: left;
+            border-width: 42px;
+            border-style: groove;
+            border-color: #EACC50;
+            border-radius: 42px;
+            -webkit-border-image: url(/content/KotHBorderBackFull.png) 84 stretch; /* Safari 3.1-5 */
+            -o-border-image: url(/content/KotHBorderBackFull.png) 84 stretch; /* Opera 11-12.1 */
+            border-image: url(/content/KotHBorderBackFull.png) 84 stretch;
+            background-color:#7C5620;
+            background-clip: padding-box;
+            padding: 24px 0px;
+        }
+        .tier{
+            margin: 3px 0px;
+        }
+        .tier > div:nth-child(1){
+            width: 100px;
+            height: 100px;
+            display: inline-block;
+            position: relative;
+            float: left;
+            margin: 0px 0px 0px 0px;
+            box-sizing: border-box;
+            font-size: 60px;
+            text-shadow: 0 4px black;
+            text-align: center;
+            vertical-align: middle;
+            border: #404040 outset;
+            border-width: 3px 0px 3px 3px;
+            border-radius: 20px 0px 0px 20px;
+                    -moz-user-select: none; /* Firefox */
+             -ms-user-select: none; /* Internet Explorer */
+            -khtml-user-select: none; /* KHTML browsers (e.g. Konqueror) */
+            -webkit-user-select: none; /* Chrome, Safari, and Opera */
+            -webkit-touch-callout: none; /* Disable Android and iOS callouts*/
+        }
+
+        .tier > div:nth-child(1) span{
+            position: absolute;
+            display: block;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100%;
+            -webkit-text-stroke: 2px black;
+        }
+        .tier-zone{ /* .tier > div:nth-child(2) */
+            box-sizing: border-box;
+            min-height: 140px;
+            padding: 10px;
+            background-color: #696969;
+            vertical-align: middle;
+            border: #404040 outset;
+            border-width: 3px;
+            border-radius: 20px;
+        }
+        .tier .tier-zone{ /* .tier > div:nth-child(2) */
+            border-top-left-radius: 0px;
+            margin-left: 97px;
+        }
+        #exclude {
+            margin-top: 10px;
             text-align: left;
         }
-        #header h1 {
-            margin-left: 0.3em;
+        .character{
+            display: inline-block;
+            height: 114px;
+            position: relative;
+            overflow: hidden;
+            cursor: grab;
         }
-        #header br{
-            display: none;
+        .character:active {
+            cursor: grabbing;
+            cursor: -moz-grabbing;
+            cursor: -webkit-grabbing;
         }
-        #header input{
-            float: right;
-            margin-top: 1.7em;
-            margin-right: 0.9em;
+        .character img{
+            display: inline-block;
+            height: 100%;
+            pointer-events: none;
         }
-        .tier .tier-zone {
-            min-height: 100px;
+        .character.hovered::before, .character.unhovered::after{
+            content:"";
+            display: inline-block;
+            height: 80%;
+            margin: 10% 3px;
+            border: #218DC6 solid 2px;
+            border-radius: 2px;
+            box-sizing: border-box;
+            width: 2px;
         }
-        .tier .tier-zone:empty {
-            border-bottom-left-radius: 0;
+        .character.hidden img{
+            /*display: none;*/
+            width: 0;
         }
-        .tier .tier-zone.hovered::before{
-            height: 74px;
-            margin: 0px 3px;
+        .tier-zone.hovered::before{
+            content: "";
+            display: inline-block;
+            height: 91px;
+            margin: 14px 3px;
+            border: #218DC6 solid 2px;
+            border-radius: 2px;
+            box-sizing: border-box;
+            width: 2px;
+            position: absolute;
         }
-    }
-    </style><!--
-    <meta content='/content/portraits/Portrait_Zoe.png' property='og:image'> {{metacode}}
-    <meta content='/tier/{{metacode}}' property='og:image'> {{metacode}} -->
+        #alert {
+            position:fixed;
+            z-index: 3;
+            padding: 25px;
+            left:0;
+            background-color: #4553B4;
+            border:#22245b solid;
+            border-width: 3px 3px 3px 0;
+            border-radius: 0 12px 12px 0;
+            margin-top: 20px;
+            -webkit-transition: left 0.5s ease-in-out; /* Safari */
+            transition: left 0.5s ease-in-out;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.7);
+        }
+        #footer {
+            margin-top: 10px
+        }
+
+        @media (max-width: 800px), (max-height: 600px) {
+            #major-wrapper:before {
+                background: #1382BA;
+                -webkit-transform: ;
+                transform: ;
+                animation: ;
+            }
+            #wrapper {
+                min-width: 370px;
+                width: 96%;
+            }
+            #header {
+                text-align: left;
+            }
+            #header h1 {
+                margin-left: 0.3em;
+            }
+            #header br{
+                display: none;
+            }
+            #header input{
+                float: right;
+                margin-top: 1.7em;
+                margin-right: 0.9em;
+            }
+            .tier .tier-zone {
+                min-height: 100px;
+            }
+            .tier .tier-zone:empty {
+                border-bottom-left-radius: 0;
+            }
+            .tier .tier-zone.hovered::before{
+                height: 74px;
+                margin: 0px 3px;
+            }
+        }
+    </style>
     <meta content='/tier/{{metacode}}' property='og:image'>
     <meta name="theme-color" content="#EACC50">
     <link type="application/json+oembed" href="{{host}}/content/tieroembed.json"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="/content/characters.js"></script>
+    <script src="/content/parse-meta.js"></script>
+    <script src="/content/clipboard.min.js"></script>
+    <script type="text/javascript">
+        function custAlert(str) {
+            var box = document.getElementById("alert");
+            box.innerHTML = str;
+            box.style.left = "";
+            setTimeout(function(){box.style.left = "-300px"}, 3000);
+        }
+        function updateMeta() {
+            var newMeta = {"S":[],"A":[],"B":[],"C":[],"D":[],"E":[]}
+            var tiers = document.getElementsByClassName("tier-zone");
+            for (var i = 0; i < tiers.length; i++) {
+                if (newMeta.hasOwnProperty(tiers[i].id)) {
+                    for (var j = 0; j < tiers[i].children.length; j++) {
+                        newMeta[tiers[i].id].push(tiers[i].children[j].id)
+                    }
+                }
+            }
+            return newMeta;
+        }
+
+        function dragStart(ev) { //drag
+            //console.log(ev.target.id);'
+            if (ev.dataTransfer != null) {
+                ev.dataTransfer.setData("ID", ev.target.id);
+                setTimeout(function(){ ev.target.classList.add("hidden"); }, 0);
+                console.log("desktop");
+            } else if (true) {
+                console.log("mobile");
+                setTimeout(function(){ ev.target.classList.add("hidden"); }, 0);
+            }
+        }
+        function drop(ev) {
+            ev.preventDefault();
+            if (ev.dataTransfer != null) {
+                var data = ev.dataTransfer.getData("ID");
+                if (ev.target.nodeType == 1) {
+                    //
+                    if (ev.target.classList.contains("character")) {
+                        ev.target.parentNode.insertBefore(document.getElementById(data), ev.target);
+                        ev.target.classList.remove("hovered");
+                    } else if (ev.target.classList.contains("tier-zone")){
+                        ev.target.classList.remove("hovered");
+                        if (document.getElementById(data)) ev.target.appendChild(document.getElementById(data));
+                        ev.target.lastChild.classList.remove("unhovered");
+                        if (ev.target.childElementCount > 1) {
+                            ev.target.children[ev.target.childElementCount-2].classList.remove("unhovered");
+                        }
+                    }
+                }
+            } else {
+                var data = ev.target.id;//ev.path[0].id;
+                var target = document.elementFromPoint(ev.changedTouches[0].clientX, ev.changedTouches[0].clientY);
+                //
+                if (!ev.target.classList.contains("tier-zone")) {
+                    if (target.classList.contains("character")) {
+                        target.parentNode.insertBefore(document.getElementById(data), target);
+                        target.classList.remove("hovered");
+                    } else if (target.classList.contains("tier-zone")){
+                        target.classList.remove("hovered");
+                        target.appendChild(document.getElementById(data));
+                        target.lastChild.classList.remove("unhovered");
+                        if (target.childElementCount > 1) {
+                            target.children[target.childElementCount-2].classList.remove("unhovered");
+                        }
+                    }
+                }
+            }
+            //console.log(updateMeta());
+            history.pushState(null, '', "/tierlist/"+encryptMeta(updateMeta()));
+        }
+        function dragEnd(ev) {
+            if (ev.cancelable) {
+                ev.preventDefault();
+            }
+            if (ev.target.nodeType == 1) {
+                if (ev.target.classList.contains("character")) {
+                    var data = ev.target.id; // ev.dataTransfer.getData("ID")
+                    document.getElementById(data).classList.remove("hidden");
+                    if (ev.type == "touchend") {
+                        tmPrev = null;
+                    }
+                }
+            }
+        }
+        function dragOver(ev) { //allowDrop
+            ev.preventDefault();
+            //console.log(ev.originalEvent.dataTransfer.types.includes("id")); make following code conditional on this upon moving to jQuery
+            //if (ev.dataTransfer != null) {
+            if (ev.target.classList.contains("character")) {
+                ev.target.classList.add("hovered");
+            } else if (ev.target.classList.contains("tier-zone")) {
+                if (ev.target.childElementCount == 0) {
+                    ev.target.classList.add("hovered");
+                } else {
+                    ev.target.lastChild.classList.add("unhovered");
+                }
+            }
+            //}
+        }
+        function dragLeave(ev) { //allowDrop
+            ev.preventDefault();
+            if (ev.target.classList.contains("character")) {
+                ev.target.classList.remove("hovered");
+            } else if (ev.target.classList.contains("tier-zone")){
+                if (ev.target.childElementCount == 0) {
+                    ev.target.classList.remove("hovered");
+                } else {
+                    ev.target.lastChild.classList.remove("unhovered");
+                }
+            }
+        }
+        var tmPrev;
+        function touchMove(ev) {
+            ev.preventDefault();
+            var posX = ev.changedTouches[0].clientX;
+            var posY = ev.changedTouches[0].clientY;
+            var posEl = document.elementFromPoint(posX, posY);
+            if (tmPrev != posEl && ev.target.classList.contains("character")) {
+                if (tmPrev == null) {
+                    tmPrev = ev.path[1];
+                }
+                //console.log(document.elementFromPoint(ev.changedTouches[0].pageX, ev.changedTouches[0].pageY));
+                //dragOver
+                var el = posEl;//document.elementFromPoint(posX, posY);
+                if (el.classList.contains("character")) {
+                    el.classList.add("hovered");
+                } else if (el.classList.contains("tier-zone")) {
+                    if (el.childElementCount == 0) {
+                        el.classList.add("hovered");
+                    } else {
+                        el.lastChild.classList.add("unhovered");
+                    }
+                }
+                //dragLeave
+                if (tmPrev != document.elementFromPoint(posX, posY)) {
+                    el = tmPrev; // TODO: if a character is released on the first frame of being dragged over a new element, the cursor will not be hidden
+                    if (el.classList.contains("character")) {
+                        el.classList.remove("hovered");
+                    } else if (el.classList.contains("tier-zone")){
+                        if (el.childElementCount == 0) {
+                            el.classList.remove("hovered");
+                        } else {
+                            el.lastChild.classList.remove("unhovered");
+                        }
+                    }
+                }
+            }
+            tmPrev = posEl;
+        }
+        //place character in tier insertCharacter("Forest", "A")
+        function insertCharacter(character, tier) {
+            if(characters.character.hasOwnProperty(character)){
+                //document.getElementById(tier).innerHTML += '<div class="character" id="'+ character +'" title="'+ characters[character].name +'" draggable="true"><img src="/content/portraits/'+ characters[character].image +'" alt="'+ characters[character].name +'"></div>';
+                var newChar = document.createElement("div");
+                document.getElementById(tier).appendChild(newChar);
+                newChar.classList.add("character");
+                newChar.id = character;
+                newChar.title = characters.character[character].name;
+                newChar.draggable = 'true';
+                newChar.innerHTML = '<img src="/content/portraits/'+ characters.character[character].image +'" alt="'+ characters.character[character].name +'">';
+                newChar.addEventListener("dragstart", dragStart);
+                newChar.addEventListener("touchstart", dragStart, {passive: false});//true);
+                //newChar.addEventListener("touchstart", touchHandler, {passive: false});//true);
+                //console.log(newChar);
+            }
+        }
+        var meta = {
+            "S": ["Zoe"],
+            "A": ["DarkBday","Insignia"],
+            "B": ["CaptainHat","Fatcat","Forest","KidCat"],
+            "C": ["Kiara","Bday","Random"],
+            "D": ["WashingMachine","Cole","Gus"],
+            "E": ["Snapback"]
+        };
+        var roster = [
+            "Bday",
+            "Kiara",
+            "CaptainHat",
+            "Cole",
+            "Snapback",
+            "WashingMachine",
+            "DarkBday",
+            "Zoe",
+            "Forest",
+            "Fatcat",
+            "Insignia",
+            "KidCat",
+            "Gus",
+            "Random"
+        ];
+        function insertMeta(json) {
+            for (var i in json) {
+                for (var j in json[i]) {
+                    //console.log(j);
+                    var index = roster.indexOf(json[i][j]);
+                    if (index !== -1) roster.splice(index, 1);
+                    insertCharacter(json[i][j], i)
+                }
+            }
+            for (var i = 0; i < roster.length; i++) {
+                insertCharacter(roster[i], "exclude");
+            }
+        }
+        window.onload = function() {
+            new ClipboardJS('#share-button', {
+                text: function(trigger) {
+                    custAlert("link copied to clipboard");
+                    return window.location.href;
+                }
+            });
+            /*
+            var characterElements = document.getElementsByClassName("character");
+            for (var i = 0; i < characterElements.length; i++) {
+                characterElements[i].addEventListener("dragstart", dragStart);
+                characterElements[i].addEventListener("touchstart", touchHandler, {passive: false});//true);
+            }
+            */
+            for (var i = 0; i < document.getElementsByClassName("tier-zone").length; i++) {
+                document.getElementsByClassName("tier-zone")[i].addEventListener("drop", drop);
+                document.getElementsByClassName("tier-zone")[i].addEventListener("dragover", dragOver); //pure JavaScript equivalent of commented jQuery line below
+                document.getElementsByClassName("tier-zone")[i].addEventListener("dragleave", dragLeave);
+                document.getElementsByClassName("tier-zone")[i].addEventListener("touchend", drop, {passive: false});//true);
+                document.getElementsByClassName("tier-zone")[i].addEventListener("touchmove", touchMove, {passive: false});//true);
+            }
+            //$(".tier-zone").on("dragover", dragOver); move to jQuery to disallow non-".character" elements from triggering drag visual
+            document.body.addEventListener("dragend", dragEnd);
+
+            var pathname = window.location.pathname.split("/");
+            var metacode = pathname[pathname.length-1];
+            if (pathname.length > 2 && metacode != "") {
+                meta = decryptMeta(metacode);
+            }
+            insertMeta(meta);
+
+            document.getElementById("wrapper").addEventListener("touchend", dragEnd, {passive: false});
+            document.getElementById("wrapper").addEventListener("touchcancel", dragEnd, {passive: false});
+        }
+    </script>
 </head>
 <div id="major-wrapper">
     <div id="header" class="extra">
@@ -239,264 +479,8 @@
         <h1>This page was created by Kabi (@Kabi in the discord, <a target="_blank" href="https://www.twitch.tv/kabimode">@kabimode</a> elsewhere)</h1>
     </div>
 </div>
-<!--<img src="/tier/{{metacode}}" alt="">-->
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="/content/characters.js"></script>
-<!--<script src="/content/processing.js"></script>-->
-<script src="/content/parse-meta.js"></script>
-<script src="/content/clipboard.min.js"></script>
-<!--<script src="/node_modules/html2canvas/dist/html2canvas.min.js"></script>-->
+
 <script type="text/javascript">
-new ClipboardJS('#share-button', {
-    text: function(trigger) {
-        custAlert("link copied to clipboard");
-        return window.location.href;
-    }
-});
-function custAlert(str) {
-    var box = document.getElementById("alert");
-    box.innerHTML = str;
-    box.style.left = "";
-    setTimeout(function(){box.style.left = "-300px"}, 3000);
-}
-function updateMeta() {
-    var newMeta = {"S":[],"A":[],"B":[],"C":[],"D":[],"E":[]}
-    var tiers = document.getElementsByClassName("tier-zone");
-    for (var i = 0; i < tiers.length; i++) {
-        if (newMeta.hasOwnProperty(tiers[i].id)) {
-            for (var j = 0; j < tiers[i].children.length; j++) {
-                newMeta[tiers[i].id].push(tiers[i].children[j].id)
-            }
-        }
-    }
-    return newMeta;
-}
 
-function dragStart(ev) { //drag
-    //console.log(ev.target.id);'
-    if (ev.dataTransfer != null) {
-        ev.dataTransfer.setData("ID", ev.target.id);
-        setTimeout(function(){ ev.target.classList.add("hidden"); }, 0);
-        console.log("desktop");
-    } else if (true) {
-        console.log("mobile");
-        setTimeout(function(){ ev.target.classList.add("hidden"); }, 0);
-    }
-}
-function drop(ev) {
-    ev.preventDefault();
-    if (ev.dataTransfer != null) {
-        var data = ev.dataTransfer.getData("ID");
-        //
-        if (ev.target.classList.contains("character")) {
-            ev.target.parentNode.insertBefore(document.getElementById(data), ev.target);
-            ev.target.classList.remove("hovered");
-        } else if (ev.target.classList.contains("tier-zone")){
-            ev.target.classList.remove("hovered");
-            if (document.getElementById(data)) ev.target.appendChild(document.getElementById(data));
-            ev.target.lastChild.classList.remove("unhovered");
-            if (ev.target.childElementCount > 1) {
-                ev.target.children[ev.target.childElementCount-2].classList.remove("unhovered");
-            }
-        }
-    } else {
-        var data = ev.target.id;//ev.path[0].id;
-        var target = document.elementFromPoint(ev.changedTouches[0].clientX, ev.changedTouches[0].clientY);
-        //
-        if (!ev.target.classList.contains("tier-zone")) {
-            if (target.classList.contains("character")) {
-                target.parentNode.insertBefore(document.getElementById(data), target);
-                target.classList.remove("hovered");
-            } else if (target.classList.contains("tier-zone")){
-                target.classList.remove("hovered");
-                target.appendChild(document.getElementById(data));
-                target.lastChild.classList.remove("unhovered");
-                if (target.childElementCount > 1) {
-                    target.children[target.childElementCount-2].classList.remove("unhovered");
-                }
-            }
-        }
-    }
-    //console.log(updateMeta());
-    history.pushState(null, '', "/tierlist/"+encryptMeta(updateMeta()));
-}
-function dragEnd(ev) {
-    if (ev.cancelable) {
-        ev.preventDefault();
-    }
-    if (ev.target.nodeType == 1) {
-        if (ev.target.classList.contains("character")) {
-            var data = ev.target.id; // ev.dataTransfer.getData("ID")
-            document.getElementById(data).classList.remove("hidden");
-            if (ev.type == "touchend") {
-                tmPrev = null;
-            }
-        }
-    }
-}
-function dragOver(ev) { //allowDrop
-    ev.preventDefault();
-    //console.log(ev.originalEvent.dataTransfer.types.includes("id")); make following code conditional on this upon moving to jQuery
-    //if (ev.dataTransfer != null) {
-        if (ev.target.classList.contains("character")) {
-            ev.target.classList.add("hovered");
-        } else if (ev.target.classList.contains("tier-zone")) {
-            if (ev.target.childElementCount == 0) {
-                ev.target.classList.add("hovered");
-            } else {
-                ev.target.lastChild.classList.add("unhovered");
-            }
-        }
-    //}
-}
-function dragLeave(ev) { //allowDrop
-    ev.preventDefault();
-    if (ev.target.classList.contains("character")) {
-        ev.target.classList.remove("hovered");
-    } else if (ev.target.classList.contains("tier-zone")){
-        if (ev.target.childElementCount == 0) {
-            ev.target.classList.remove("hovered");
-        } else {
-            ev.target.lastChild.classList.remove("unhovered");
-        }
-    }
-}
-var tmPrev;
-function touchMove(ev) {
-    ev.preventDefault();
-    var posX = ev.changedTouches[0].clientX;
-    var posY = ev.changedTouches[0].clientY;
-    var posEl = document.elementFromPoint(posX, posY);
-    if (tmPrev != posEl && ev.target.classList.contains("character")) {
-        if (tmPrev == null) {
-            tmPrev = ev.path[1];
-        }
-        //console.log(document.elementFromPoint(ev.changedTouches[0].pageX, ev.changedTouches[0].pageY));
-        //dragOver
-        var el = posEl;//document.elementFromPoint(posX, posY);
-        if (el.classList.contains("character")) {
-            el.classList.add("hovered");
-        } else if (el.classList.contains("tier-zone")) {
-            if (el.childElementCount == 0) {
-                el.classList.add("hovered");
-            } else {
-                el.lastChild.classList.add("unhovered");
-            }
-        }
-        //dragLeave
-        if (tmPrev != document.elementFromPoint(posX, posY)) {
-            el = tmPrev; // TODO: if a character is released on the first frame of being dragged over a new element, the cursor will not be hidden
-            if (el.classList.contains("character")) {
-                el.classList.remove("hovered");
-            } else if (el.classList.contains("tier-zone")){
-                if (el.childElementCount == 0) {
-                    el.classList.remove("hovered");
-                } else {
-                    el.lastChild.classList.remove("unhovered");
-                }
-            }
-        }
-    }
-    tmPrev = posEl;
-}
-/*
-var characterElements = document.getElementsByClassName("character");
-for (var i = 0; i < characterElements.length; i++) {
-    characterElements[i].addEventListener("dragstart", dragStart);
-    characterElements[i].addEventListener("touchstart", touchHandler, {passive: false});//true);
-}
-*/
-for (var i = 0; i < document.getElementsByClassName("tier-zone").length; i++) {
-    document.getElementsByClassName("tier-zone")[i].addEventListener("drop", drop);
-    document.getElementsByClassName("tier-zone")[i].addEventListener("dragover", dragOver); //pure JavaScript equivalent of commented jQuery line below
-    document.getElementsByClassName("tier-zone")[i].addEventListener("dragleave", dragLeave);
-    document.getElementsByClassName("tier-zone")[i].addEventListener("touchend", drop, {passive: false});//true);
-    document.getElementsByClassName("tier-zone")[i].addEventListener("touchmove", touchMove, {passive: false});//true);
-}
-//$(".tier-zone").on("dragover", dragOver); move to jQuery to disallow non-".character" elements from triggering drag visual
-document.body.addEventListener("dragend", dragEnd);
-
-//place character in tier insertCharacter("Forest", "A")
-function insertCharacter(character, tier) {
-    if(characters.character.hasOwnProperty(character)){
-        //document.getElementById(tier).innerHTML += '<div class="character" id="'+ character +'" title="'+ characters[character].name +'" draggable="true"><img src="/content/portraits/'+ characters[character].image +'" alt="'+ characters[character].name +'"></div>';
-        var newChar = document.createElement("div");
-        document.getElementById(tier).appendChild(newChar);
-        newChar.classList.add("character");
-        newChar.id = character;
-        newChar.title = characters.character[character].name;
-        newChar.draggable = 'true';
-        newChar.innerHTML = '<img src="/content/portraits/'+ characters.character[character].image +'" alt="'+ characters.character[character].name +'">';
-        newChar.addEventListener("dragstart", dragStart);
-        newChar.addEventListener("touchstart", dragStart, {passive: false});//true);
-        //newChar.addEventListener("touchstart", touchHandler, {passive: false});//true);
-        //console.log(newChar);
-    }
-}
-/*
-var meta = {
-    "S": ["Zoe","HatGang","ProfessorGenius"],
-    "A": ["DarkBday","Insignia"],
-    "B": ["CaptainHat","Fatcat","Forest","Kiara","KidCat"],
-    "C": ["Bday","Random"],
-    "D": ["Cole","Gus","WashingMachine"],
-    "E": ["Snapback"]
-}
-*/
-var meta = {
-    "S": ["Zoe"],
-    "A": ["DarkBday","Insignia"],
-    "B": ["CaptainHat","Fatcat","Forest","KidCat"],
-    "C": ["Kiara","Bday","Random"],
-    "D": ["WashingMachine","Cole","Gus"],
-    "E": ["Snapback"]
-}
-var roster = [
-    "Bday",
-    "Kiara",
-    "CaptainHat",
-    "Cole",
-    "Snapback",
-    "WashingMachine",
-    "DarkBday",
-    "Zoe",
-    "Forest",
-    "Fatcat",
-    "Insignia",
-    "KidCat",
-    "Gus",
-    "Random"
-]
-function insertMeta(json) {
-    for (var i in json) {
-        for (var j in json[i]) {
-            //console.log(j);
-            var index = roster.indexOf(json[i][j]);
-            if (index !== -1) roster.splice(index, 1);
-            insertCharacter(json[i][j], i)
-        }
-    }
-    for (var i = 0; i < roster.length; i++) {
-        insertCharacter(roster[i], "exclude");
-    }
-}
-
-var pathname = window.location.pathname.split("/");
-var metacode = pathname[pathname.length-1];
-if (pathname.length > 2 && metacode != "") {
-    meta = decryptMeta(metacode);
-}
-insertMeta(meta);
-
-//document.getElementById("share-button").addEventListener("click", function(){
-//    copyToClipboard(window.location.href);
-//    custAlert("link copied to clipboard");
-//});
-//document.getElementById("wrapper").addEventListener("touchstart", dragStart, {passive: false});//true);
-//document.getElementById("wrapper").addEventListener("touchmove", touchMove, {passive: false});//true);
-//document.getElementById("wrapper").addEventListener("touchend", drop, {passive: false});//true);
-document.getElementById("wrapper").addEventListener("touchend", dragEnd, {passive: false});//true);
-document.getElementById("wrapper").addEventListener("touchcancel", dragEnd, {passive: false});//true);
-//document.body.addEventListener("touchend", dragEnd, {passive: false});//true);
 </script>

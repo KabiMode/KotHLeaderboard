@@ -251,6 +251,163 @@
             }
         }
     </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="/content/processing.js"></script>
+    <script type="text/javascript">
+        function collapseJSON (data) {
+            console.log("success");
+            for (var i in data.one) {
+                data['users'].push({"place":data.one[i].place,"elo":data.one[i].elo,"discordHandle":data.one[i].discordHandle});
+            }
+            for (var i in data.two) {
+                data['users'].push({"place":data.two[i].place,"elo":data.two[i].elo,"discordHandle":data.two[i].discordHandle,"house":data.two[i].house});
+            }
+            for (var i in data.three) {
+                data['users'].push({"place":data.three[i].place,"elo":data.three[i].elo,"discordHandle":data.three[i].discordHandle,"house":data.three[i].house});
+            }
+            for (var i in data.four) {
+                data['users'].push({"place":data.four[i].place,"elo":data.four[i].elo,"discordHandle":data.four[i].discordHandle,"house":data.four[i].house});
+            }
+            delete data["one"];
+            delete data["two"];
+            delete data["three"];
+            delete data["four"];
+            data.users = sortByKey(data.users, "elo");
+            console.log(data);
+            displayLeaders(data);
+            //displayLeaders();
+        }
+
+        function displayLeaders(leaders){
+            var table = document.getElementById("table");
+            table.innerHTML = "";
+            for (var i = 0; i < leaders.users.length; i++) {
+                var row = table.insertRow(i);
+                var cell1 = row.insertCell(0);
+                var cell2 = row.insertCell(1);
+                var cell3 = row.insertCell(2);
+                var cell4 = row.insertCell(3);
+                if (i == 0) {
+                    cell1.innerHTML = "<br>" + (i+1) + "<br>"; //cell1.innerHTML = "<br>" + leaders.users[i].place + "<br>";
+                    cell2.classList.add("flexFont");
+                    cell2.innerHTML = "<span>@"+leaders.users[i].discordHandle+"</span>";
+                } else {
+                    cell1.innerHTML = i+1; //cell1.innerHTML = leaders.users[i].place;
+                    cell2.innerHTML = "@"+leaders.users[i].discordHandle;
+                }
+                cell3.innerHTML = numberWithCommas(leaders.users[i].elo);
+                if (leaders.users[i].house == "balance") {
+                    cell4.innerHTML = '<img src = "https://vignette.wikia.nocookie.net/hypesquad/images/4/4f/BalanceLogo.png/revision/latest?cb=20180825045553">'
+                } else if (leaders.users[i].house == "bravery") {
+                    cell4.innerHTML = '<img src = "https://vignette.wikia.nocookie.net/hypesquad/images/4/41/BraveryLogo.png/revision/latest?cb=20180825044200">'
+                } else if (leaders.users[i].house == "brilliance") {
+                    cell4.innerHTML = '<img src = "https://vignette.wikia.nocookie.net/hypesquad/images/8/8f/BrillianceLogo.png/revision/latest?cb=20180825045035">'
+                } else {
+                    cell4.innerHTML = '<img src = "https://cdn0.iconfinder.com/data/icons/free-social-media-set/24/discord-512.png">';
+                }
+                //cell4.innerHTML = leaders.users[i].house;
+
+                //images
+                //Balance: https://vignette.wikia.nocookie.net/hypesquad/images/4/4f/BalanceLogo.png/revision/latest?cb=20180825045553
+                //Bravery: https://vignette.wikia.nocookie.net/hypesquad/images/4/41/BraveryLogo.png/revision/latest?cb=20180825044200
+                //Brilliance: https://vignette.wikia.nocookie.net/hypesquad/images/8/8f/BrillianceLogo.png/revision/latest?cb=20180825045035
+            }
+            flexFont()
+        }
+        function loadLeaders(ladder){
+            console.log(count);
+            //var count = (getUrlVars()["count"] == "" || getUrlVars()["count"] > 100 || getUrlVars()["count"] < 1) ? 100 : getUrlVars()["count"];
+            var result;
+            if (ladder == "" || ladder == null) {
+                var newJSON = {"users":[],"one":[],"two":[],"three":[],"four":[]};
+                getval("https://api.kingofthehat.com/leaderboard" + "?count=" + count, function(newData){ //./data/leaderboard
+                    //$.extend(newJSON, newData.users );
+                    //Object.assign(newJSON.users, newData.users);
+                    $.extend( newJSON.one, newData.users );
+                    //console.log(newData)
+                    //console.log(newJSON)
+                    if (newJSON.one.length == count && newJSON.two.length == count && newJSON.three.length == count && newJSON.four.length == count) {
+                        collapseJSON(newJSON);
+                    }
+                });
+                getval("https://api.kingofthehat.com/leaderboard?house=balance" + "&count=" + count, function(newData){//./data/leaderboard?house=balance
+                    $.extend( newJSON.two, newData.users );
+                    //console.log(newData)
+                    //console.log(newJSON)
+                    if (newJSON.one.length == count && newJSON.two.length == count && newJSON.three.length == count && newJSON.four.length == count) {
+                        collapseJSON(newJSON);
+                    }
+                });
+                getval("https://api.kingofthehat.com/leaderboard?house=bravery" + "&count=" + count, function(newData){//./data/leaderboard?house=bravery
+                    $.extend( newJSON.three, newData.users );
+                    //console.log(newData)
+                    //console.log(newJSON)
+                    if (newJSON.one.length == count && newJSON.two.length == count && newJSON.three.length == count && newJSON.four.length == count) {
+                        collapseJSON(newJSON);
+                    }
+                });
+                getval("https://api.kingofthehat.com/leaderboard?house=brilliance" + "&count=" + count, function(newData){//./data/leaderboard?house=brilliance
+                    $.extend( newJSON.four, newData.users );
+                    //console.log(newJSON)
+                    //console.log(newData)
+                    if (newJSON.one.length == count && newJSON.two.length == count && newJSON.three.length == count && newJSON.four.length == count) {
+                        collapseJSON(newJSON);
+                    }
+                });
+            } else if (ladder=="none") {
+                getval("https://api.kingofthehat.com/leaderboard" + "?count=" + count, displayLeaders); //"./data/leaderboard"
+            } else {
+                if (ladder == "balance" || ladder == "bravery" || ladder == "brilliance") {
+                    getval("https://api.kingofthehat.com/leaderboard?house=" + ladder + "&count=" + count, displayLeaders); //"./data/leaderboard?house=" + ladder
+                } else {
+                        getval("https://api.kingofthehat.com/leaderboard" + "?count=" + count, displayLeaders); //"./data/leaderboard"
+                }
+            }
+                console.log(result);
+            return result;
+        }
+
+        function loadMatchNumbers(data){
+            console.log(data);
+            document.getElementById("bravery").innerHTML = document.getElementById("bravery").innerHTML + "<br><span>"+numberWithCommas(data.bravery)+"</span>";
+            document.getElementById("balance").innerHTML = document.getElementById("balance").innerHTML + "<br><span>"+numberWithCommas(data.balance)+"</span>";
+            document.getElementById("brilliance").innerHTML = document.getElementById("brilliance").innerHTML + "<br><span>"+numberWithCommas(data.brilliance)+"</span>";
+        }
+        window.onload = function() {
+            count = (getUrlVars()["count"] == null || getUrlVars()["count"] == "" || getUrlVars()["count"] > 100 || getUrlVars()["count"] < 1) ? 100 : getUrlVars()["count"];
+            document.getElementById("all").addEventListener("click", function() {loadLeaders("");history.pushState(null, '', setUrlParameter(window.location.href, "house", null));});
+            document.getElementById("none").addEventListener("click", function() {loadLeaders("none");history.pushState(null, '', setUrlParameter(window.location.href, "house", 'none'));});
+            document.getElementById("balance").addEventListener("click", function() {loadLeaders("balance");history.pushState(null, '', setUrlParameter(window.location.href, "house", 'balance'));});
+            document.getElementById("bravery").addEventListener("click", function() {loadLeaders("bravery");history.pushState(null, '', setUrlParameter(window.location.href, "house", 'bravery'));});
+            document.getElementById("brilliance").addEventListener("click", function() {loadLeaders("brilliance");history.pushState(null, '', setUrlParameter(window.location.href, "house", 'brilliance'));});
+            loadLeaders(getUrlVars()["house"]);
+            document.getElementById("topCount").value = count;
+            getval("https://api.kingofthehat.com/houses/hypesquad", loadMatchNumbers);
+
+
+            document.getElementById("topCount").addEventListener("input", function() {
+                count = document.getElementById("topCount").value;
+                if (count == 100) {
+                    history.pushState(null, '', setUrlParameter(window.location.href, "count", null));
+                } else {
+                    history.pushState(null, '', setUrlParameter(window.location.href, "count", count));
+                }
+                loadLeaders(getUrlVars()["house"]);
+            });
+
+            $("body").on("click", "", function (e) {
+                for (var i = 0; i < document.getElementsByClassName("helper").length; i++) {
+                    document.getElementsByClassName("helper")[i].style.display = "inline-block";
+                }
+                if (!$(e.target).is("#help, #help *")) {
+                     // not stuff in here
+                     for (var i = 0; i < document.getElementsByClassName("helper").length; i++) {
+                         document.getElementsByClassName("helper")[i].style.display = "none";
+                     }
+                }
+            });
+        };
+    </script>
 </head>
 <div id="major-wrapper">
     <div id="header" class="extra">
@@ -286,169 +443,3 @@
         <h1>This page was created by Kabi (@Kabi in the discord, <a target="_blank" href="https://www.twitch.tv/kabimode">@kabimode</a> elsewhere)</h1>
     </div>
 </div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="/content/processing.js"></script>
-<script type="text/javascript">
-count = (getUrlVars()["count"] == null || getUrlVars()["count"] == "" || getUrlVars()["count"] > 100 || getUrlVars()["count"] < 1) ? 100 : getUrlVars()["count"];
-//window.onload = function() {
-//    setUrlParameter(window.location.href, "count", count);
-//};
-
-function collapseJSON (data) {
-    console.log("success");
-    for (var i in data.one) {
-        data['users'].push({"place":data.one[i].place,"elo":data.one[i].elo,"discordHandle":data.one[i].discordHandle});
-    }
-    for (var i in data.two) {
-        data['users'].push({"place":data.two[i].place,"elo":data.two[i].elo,"discordHandle":data.two[i].discordHandle,"house":data.two[i].house});
-    }
-    for (var i in data.three) {
-        data['users'].push({"place":data.three[i].place,"elo":data.three[i].elo,"discordHandle":data.three[i].discordHandle,"house":data.three[i].house});
-    }
-    for (var i in data.four) {
-        data['users'].push({"place":data.four[i].place,"elo":data.four[i].elo,"discordHandle":data.four[i].discordHandle,"house":data.four[i].house});
-    }
-    delete data["one"];
-    delete data["two"];
-    delete data["three"];
-    delete data["four"];
-    data.users = sortByKey(data.users, "elo");
-    console.log(data);
-    displayLeaders(data);
-    //displayLeaders();
-}
-
-function displayLeaders(leaders){
-    var table = document.getElementById("table");
-    table.innerHTML = "";
-    for (var i = 0; i < leaders.users.length; i++) {
-        var row = table.insertRow(i);
-        var cell1 = row.insertCell(0);
-        var cell2 = row.insertCell(1);
-        var cell3 = row.insertCell(2);
-        var cell4 = row.insertCell(3);
-        if (i == 0) {
-            cell1.innerHTML = "<br>" + (i+1) + "<br>"; //cell1.innerHTML = "<br>" + leaders.users[i].place + "<br>";
-            cell2.classList.add("flexFont");
-            cell2.innerHTML = "<span>@"+leaders.users[i].discordHandle+"</span>";
-        } else {
-            cell1.innerHTML = i+1; //cell1.innerHTML = leaders.users[i].place;
-            cell2.innerHTML = "@"+leaders.users[i].discordHandle;
-        }
-        cell3.innerHTML = numberWithCommas(leaders.users[i].elo);
-        if (leaders.users[i].house == "balance") {
-            cell4.innerHTML = '<img src = "https://vignette.wikia.nocookie.net/hypesquad/images/4/4f/BalanceLogo.png/revision/latest?cb=20180825045553">'
-        } else if (leaders.users[i].house == "bravery") {
-            cell4.innerHTML = '<img src = "https://vignette.wikia.nocookie.net/hypesquad/images/4/41/BraveryLogo.png/revision/latest?cb=20180825044200">'
-        } else if (leaders.users[i].house == "brilliance") {
-            cell4.innerHTML = '<img src = "https://vignette.wikia.nocookie.net/hypesquad/images/8/8f/BrillianceLogo.png/revision/latest?cb=20180825045035">'
-        } else {
-            cell4.innerHTML = '<img src = "https://cdn0.iconfinder.com/data/icons/free-social-media-set/24/discord-512.png">';
-        }
-        //cell4.innerHTML = leaders.users[i].house;
-
-        //images
-        //Balance: https://vignette.wikia.nocookie.net/hypesquad/images/4/4f/BalanceLogo.png/revision/latest?cb=20180825045553
-        //Bravery: https://vignette.wikia.nocookie.net/hypesquad/images/4/41/BraveryLogo.png/revision/latest?cb=20180825044200
-        //Brilliance: https://vignette.wikia.nocookie.net/hypesquad/images/8/8f/BrillianceLogo.png/revision/latest?cb=20180825045035
-    }
-    flexFont()
-}
-function loadLeaders(ladder){
-    console.log(count);
-    //var count = (getUrlVars()["count"] == "" || getUrlVars()["count"] > 100 || getUrlVars()["count"] < 1) ? 100 : getUrlVars()["count"];
-    var result;
-    if (ladder == "" || ladder == null) {
-        var newJSON = {"users":[],"one":[],"two":[],"three":[],"four":[]};
-        getval("https://api.kingofthehat.com/leaderboard" + "?count=" + count, function(newData){ //./data/leaderboard
-            //$.extend(newJSON, newData.users );
-            //Object.assign(newJSON.users, newData.users);
-            $.extend( newJSON.one, newData.users );
-            //console.log(newData)
-            //console.log(newJSON)
-            if (newJSON.one.length == count && newJSON.two.length == count && newJSON.three.length == count && newJSON.four.length == count) {
-                collapseJSON(newJSON);
-            }
-        });
-        getval("https://api.kingofthehat.com/leaderboard?house=balance" + "&count=" + count, function(newData){//./data/leaderboard?house=balance
-            $.extend( newJSON.two, newData.users );
-            //console.log(newData)
-            //console.log(newJSON)
-            if (newJSON.one.length == count && newJSON.two.length == count && newJSON.three.length == count && newJSON.four.length == count) {
-                collapseJSON(newJSON);
-            }
-        });
-        getval("https://api.kingofthehat.com/leaderboard?house=bravery" + "&count=" + count, function(newData){//./data/leaderboard?house=bravery
-            $.extend( newJSON.three, newData.users );
-            //console.log(newData)
-            //console.log(newJSON)
-            if (newJSON.one.length == count && newJSON.two.length == count && newJSON.three.length == count && newJSON.four.length == count) {
-                collapseJSON(newJSON);
-            }
-        });
-        getval("https://api.kingofthehat.com/leaderboard?house=brilliance" + "&count=" + count, function(newData){//./data/leaderboard?house=brilliance
-            $.extend( newJSON.four, newData.users );
-            //console.log(newJSON)
-            //console.log(newData)
-            if (newJSON.one.length == count && newJSON.two.length == count && newJSON.three.length == count && newJSON.four.length == count) {
-                collapseJSON(newJSON);
-            }
-        });
-    } else if (ladder=="none") {
-        getval("https://api.kingofthehat.com/leaderboard" + "?count=" + count, displayLeaders); //"./data/leaderboard"
-    } else {
-        if (ladder == "balance" || ladder == "bravery" || ladder == "brilliance") {
-            getval("https://api.kingofthehat.com/leaderboard?house=" + ladder + "&count=" + count, displayLeaders); //"./data/leaderboard?house=" + ladder
-        } else {
-                getval("https://api.kingofthehat.com/leaderboard" + "?count=" + count, displayLeaders); //"./data/leaderboard"
-        }
-    }
-        console.log(result);
-    return result;
-}
-
-function loadMatchNumbers(data){
-    console.log(data);
-    document.getElementById("bravery").innerHTML = document.getElementById("bravery").innerHTML + "<br><span>"+numberWithCommas(data.bravery)+"</span>";
-    document.getElementById("balance").innerHTML = document.getElementById("balance").innerHTML + "<br><span>"+numberWithCommas(data.balance)+"</span>";
-    document.getElementById("brilliance").innerHTML = document.getElementById("brilliance").innerHTML + "<br><span>"+numberWithCommas(data.brilliance)+"</span>";
-}
-//var leaders = JSON.parse('{"users":[{"place":1,"elo":160104,"discordHandle":"Greenshrum","house":"brilliance"},{"place":2,"elo":151116,"discordHandle":"DPS Abook","house":"brilliance"},{"place":3,"elo":146664,"discordHandle":"Cheezy","house":"brilliance"},{"place":4,"elo":144480,"discordHandle":"Soren","house":"brilliance"},{"place":5,"elo":141540,"discordHandle":"Kabi","house":"brilliance"},{"place":6,"elo":140616,"discordHandle":"PlasmaPlasma (Creska)","house":"brilliance"},{"place":7,"elo":140112,"discordHandle":"r3lax (silkyskilz)","house":"brilliance"},{"place":8,"elo":139524,"discordHandle":"Fennrir","house":"brilliance"},{"place":9,"elo":138684,"discordHandle":"The_Wicked_I","house":"brilliance"},{"place":10,"elo":137844,"discordHandle":"eliterate","house":"brilliance"}]}');
-
-//loadLeaders("brilliance");
-//loadLeaders("balance");yrameter(window.location.href, "house", 'none'));});
-
-document.getElementById("all").addEventListener("click", function() {loadLeaders("");history.pushState(null, '', setUrlParameter(window.location.href, "house", null));});
-document.getElementById("none").addEventListener("click", function() {loadLeaders("none");history.pushState(null, '', setUrlParameter(window.location.href, "house", 'none'));});
-document.getElementById("balance").addEventListener("click", function() {loadLeaders("balance");history.pushState(null, '', setUrlParameter(window.location.href, "house", 'balance'));});
-document.getElementById("bravery").addEventListener("click", function() {loadLeaders("bravery");history.pushState(null, '', setUrlParameter(window.location.href, "house", 'bravery'));});
-document.getElementById("brilliance").addEventListener("click", function() {loadLeaders("brilliance");history.pushState(null, '', setUrlParameter(window.location.href, "house", 'brilliance'));});
-loadLeaders(getUrlVars()["house"]);
-document.getElementById("topCount").value = count;//(getUrlVars()["count"] == "" || getUrlVars()["count"] > 100 || getUrlVars()["count"] < 1) ? 100 : getUrlVars()["count"];
-getval("https://api.kingofthehat.com/houses/hypesquad", loadMatchNumbers);
-
-
-document.getElementById("topCount").addEventListener("input", function() {
-    count = document.getElementById("topCount").value;
-    if (count == 100) {
-        history.pushState(null, '', setUrlParameter(window.location.href, "count", null));
-    } else {
-        history.pushState(null, '', setUrlParameter(window.location.href, "count", count));
-    }
-    loadLeaders(getUrlVars()["house"]);
-});
-
-$("body").on("click", "", function (e) {
-
-    for (var i = 0; i < document.getElementsByClassName("helper").length; i++) {
-        document.getElementsByClassName("helper")[i].style.display = "inline-block";
-    }
-    if (!$(e.target).is("#help, #help *")) {
-         // not stuff in here
-         for (var i = 0; i < document.getElementsByClassName("helper").length; i++) {
-             document.getElementsByClassName("helper")[i].style.display = "none";
-         }
-    }
-
-});
-</script>
