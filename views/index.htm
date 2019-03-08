@@ -35,7 +35,7 @@
             text-align:center;
             position:relative;
         }
-        input[type=number]:hover::-webkit-inner-spin-button {*/
+        */
         input[type=number]::-webkit-inner-spin-button {
             -webkit-appearance: none;
             cursor:pointer;
@@ -393,7 +393,7 @@ function loadMatchNumbers(data){
 //loadLeaders("brilliance");
 //loadLeaders("balance");yrameter(window.location.href, "house", 'none'));});
 
-document.getElementById("all").addEventListener("click", function() {loadLeaders("");history.pushState(null, '', setUrlParameter(window.location.href, "house", ''));});
+document.getElementById("all").addEventListener("click", function() {loadLeaders("");history.pushState(null, '', setUrlParameter(window.location.href, "house", null));});
 document.getElementById("none").addEventListener("click", function() {loadLeaders("none");history.pushState(null, '', setUrlParameter(window.location.href, "house", 'none'));});
 document.getElementById("balance").addEventListener("click", function() {loadLeaders("balance");history.pushState(null, '', setUrlParameter(window.location.href, "house", 'balance'));});
 document.getElementById("bravery").addEventListener("click", function() {loadLeaders("bravery");history.pushState(null, '', setUrlParameter(window.location.href, "house", 'bravery'));});
@@ -405,7 +405,11 @@ getval("https://api.kingofthehat.com/houses/hypesquad", loadMatchNumbers);
 
 document.getElementById("topCount").addEventListener("input", function() {
     count = document.getElementById("topCount").value;
-    history.pushState(null, '', setUrlParameter(window.location.href, "count", count));
+    if (count == 100) {
+        history.pushState(null, '', setUrlParameter(window.location.href, "count", null));
+    } else {
+        history.pushState(null, '', setUrlParameter(window.location.href, "count", count));
+    }
     loadLeaders(getUrlVars()["house"]);
 });
 

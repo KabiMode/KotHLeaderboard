@@ -47,11 +47,10 @@ function getUrlVars() {
     return vars;
 }
 function setUrlParameter(url, key, value) {
-
-    var baseUrl = url.split('?')[0],
-        urlQueryString = '?' + url.split('?')[1],
+        var baseUrl = url.split('?')[0],
+        urlQueryString = url.split('?').length > 1 ? '?' + url.split('?')[1] : null,
         newParam = key + '=' + value,
-        params = '?' + newParam;
+        params = value == null ? '' : '?' + newParam;
 
     // If the "search" string exists, then build params from it
     if (urlQueryString) {
