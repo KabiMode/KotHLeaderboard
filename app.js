@@ -25,8 +25,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 //app.use('/node_modules/html2canvas/dist', express.static(path.join(__dirname, 'node_modules/html2canvas/dist')))
 app.use('/content', express.static(path.join(__dirname, 'content')))
 app.use('/data/*', dataRouter);
-app.use('/tier', tierimgRouter);
 app.use('/tierlist', tierRouter);
+app.use('/tier', tierimgRouter);
 app.use('/', indexRouter);
 
 // catch 404 and forward to error handler
