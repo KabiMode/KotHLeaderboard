@@ -49,14 +49,13 @@ body::-webkit-scrollbar { width: 0 !important }
 
 
 #footer{
-    position: sticky;
+    position: relative;
     z-index: 2;
     width:100%;
     box-sizing: border-box;
     background-color: #4553b4;
     border-top:#22245b solid 5px;
     min-height: 100px;
-    bottom: -100px;
 }
 #footer h1{
     display: inline-block;
@@ -64,6 +63,7 @@ body::-webkit-scrollbar { width: 0 !important }
     margin-block-end: .1em;
     margin-block-start: 1em;
     text-shadow: 0 4px black;
+    font-weight: 100;
     font-weight: initial;
 }
 h1 a {

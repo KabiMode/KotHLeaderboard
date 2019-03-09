@@ -3,6 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const favicon = require('express-favicon');
 
 var indexRouter = require('./routes/index');
 var dataRouter = require('./routes/data');
@@ -21,6 +22,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(favicon(path.join(__dirname, 'content','favicon.ico')));
 
 //app.use('/node_modules/html2canvas/dist', express.static(path.join(__dirname, 'node_modules/html2canvas/dist')))
 app.use('/content', express.static(path.join(__dirname, 'content')))
