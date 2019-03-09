@@ -27,6 +27,7 @@ app.use('/content', express.static(path.join(__dirname, 'content')))
 app.use('/data/*', dataRouter);
 app.use('/tierlist', tierRouter);
 app.use('/tier', tierimgRouter);
+app.use('/tier.png', tierimgRouter);
 app.use('/', indexRouter);
 
 // catch 404 and forward to error handler
