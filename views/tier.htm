@@ -10,6 +10,9 @@
     <META name="viewport" content="initial-scale=0.65, user-scalable=no">
     <link rel="stylesheet" type="text/css" href="/content/style.css">
     <style media="screen">
+        body {
+            overflow-anchor: auto;
+        }
         #header input {
             display: table-row-group;
             background-color: #EACC50;
@@ -231,12 +234,15 @@
                 setTimeout(function(){ ev.target.classList.add("hidden"); }, 0);
                 console.log("desktop");
             } else if (true) {
+                var tempScrollTop = $(window).scrollTop(); //this is a hack to prevent scroll jumping. Look for a better solution
                 console.log("mobile");
-                setTimeout(function(){ ev.target.classList.add("hidden"); }, 0);
+                setTimeout(function(){ ev.target.classList.add("hidden"); $(window).scrollTop(tempScrollTop);}, 0);
             }
         }
         function drop(ev) {
-            ev.preventDefault();
+            if (ev.cancelable) {
+                ev.preventDefault();
+            }
             if (ev.dataTransfer != null) {
                 var data = ev.dataTransfer.getData("ID");
                 if (ev.target.nodeType == 1) {
@@ -254,6 +260,7 @@
                     }
                 }
             } else {
+                var tempScrollTop = $(window).scrollTop(); //absoulte garbage pt. 1
                 var data = ev.target.id;//ev.path[0].id;
                 var target = document.elementFromPoint(ev.changedTouches[0].clientX, ev.changedTouches[0].clientY);
                 //
@@ -270,6 +277,7 @@
                         }
                     }
                 }
+                setTimeout(function(){$(window).scrollTop(tempScrollTop);}, 2); //absoulte garbage pt. 2
             }
             //console.log(updateMeta());
             history.pushState(null, '', "/tierlist/"+encryptMeta(updateMeta()));
@@ -280,8 +288,9 @@
             }
             if (ev.target.nodeType == 1) {
                 if (ev.target.classList.contains("character")) {
-                    var data = ev.target.id; // ev.dataTransfer.getData("ID")
-                    document.getElementById(data).classList.remove("hidden");
+                    //var data = ev.target.id; // ev.dataTransfer.getData("ID")
+                    //var tempScrollTop = $(window).scrollTop();
+                    setTimeout(function(){ ev.target.classList.remove("hidden");}, 0); //$(window).scrollTop(tempScrollTop);}, 0);
                     if (ev.type == "touchend") {
                         tmPrev = null;
                     }
