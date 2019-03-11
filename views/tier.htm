@@ -317,7 +317,9 @@
         }
         var tmPrev;
         function touchMove(ev) {
-            ev.preventDefault();
+            if (!(ev.target.classList.contains("tier-zone"))) {
+                ev.preventDefault();
+            }
             var posX = ev.changedTouches[0].clientX;
             var posY = ev.changedTouches[0].clientY;
             var posEl = document.elementFromPoint(posX, posY);
