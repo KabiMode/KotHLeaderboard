@@ -7,6 +7,7 @@
 
         gtag('config', 'UA-135672746-1');
     </script>
+    <title>Leaderboard – King of the Hat</title>
     <META name="viewport" content="initial-scale=0.5, user-scalable=no">
     <link rel="stylesheet" type="text/css" href="/content/style.css">
     <style media="screen">
@@ -128,16 +129,21 @@
             z-index: 2;
             position: relative;
         }
+        #table-clip {
+            width: calc(100% + 48px);
+            margin-left: -24px;
+            margin-top: 3px;
+            overflow: hidden;
+        }
         table {
             position: relative;
             table-layout: fixed;
             text-align: center;
             background-color: #3d15a1;
             border-collapse: separate;
-            width: calc(100% + 48px);
-            margin-left: -24px;
-            margin-top: 3px;
-            border-spacing:0 5px;
+            width: 100%;
+            margin: -6px 0;
+            border-spacing:0 6px;
             text-shadow: 0 4px black;
             font-size: 1.5em;
             z-index: 2;
@@ -415,10 +421,12 @@
             </div>
         </div>
         <div id="table-wrapper">
-            <table id="table">
-                <tbody>
-                </tbody>
-            </table>
+            <div id="table-clip">
+                <table id="table">
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
     <div id="footer" class="extra">
