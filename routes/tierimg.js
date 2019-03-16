@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var draw = require('../tier/tier.js');
+var draw = require('../views/tier.js');
 /* GET home page. */
 
 //get image with parameters
