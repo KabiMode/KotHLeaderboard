@@ -1,7 +1,11 @@
 @import url('https://fonts.googleapis.com/css?family=Luckiest+Guy');
 @keyframes animatedBackground {
-    from { background-position: 0 0; }
-    to { background-position: 768px 384px; } //x is 16 pixels, y is 32 pixels. final image is scaled 600%
+    from { transform: translate(0px,0px); }
+    to { transform: translate(768px, 384px); } //x is 16 pixels, y is 32 pixels. final image is scaled 600%
+    /*
+        from { background-position: 0 0; }
+        to { background-position: 768px 384px; } //x is 16 pixels, y is 32 pixels. final image is scaled 600%
+        */
 }
 body {
     margin: 0;
